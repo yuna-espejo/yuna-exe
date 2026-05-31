@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUNA.EXE — Software Engineer Quest</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg0:#0d1117;--bg1:#161b22;--bg2:#21262d;--bg3:#30363d;
+  --green:#3fb950;--green2:#238636;--purple:#8b5cf6;--purple2:#6d28d9;
+  --gold:#d4a017;--red:#f85149;--blue:#58a6ff;--orange:#e3a93a;
+  --muted:#8b949e;--border:#30363d;--text:#e6edf3;
+}
+body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;min-height:100vh;}
+.nav{background:var(--bg1);border-bottom:1px solid var(--border);padding:0 12px;display:flex;align-items:center;gap:2px;height:46px;position:sticky;top:0;z-index:100;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.logo{color:var(--green);font-weight:700;font-size:13px;margin-right:10px;letter-spacing:1px;white-space:nowrap;}
+.tab{padding:5px 10px;border-radius:6px;cursor:pointer;color:var(--muted);font-size:11px;border:none;background:none;white-space:nowrap;transition:all .15s;}
+.tab:hover{background:var(--bg2);color:var(--blue);}
+.tab.active{background:var(--bg2);color:#fff;}
+.page{display:none;padding:12px;}
+.page.active{display:block;}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;}
+.card-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr;}}
+.bar-bg{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;margin:3px 0;}
+.bar{height:100%;border-radius:4px;transition:width .5s ease;}
+.b-green{background:linear-gradient(90deg,#238636,#3fb950);}
+.b-purple{background:linear-gradient(90deg,#6d28d9,#8b5cf6);}
+.b-blue{background:linear-gradient(90deg,#1f6feb,#58a6ff);}
+.b-orange{background:linear-gradient(90deg,#b45309,#e3a93a);}
+.b-red{background:linear-gradient(90deg,#b91c1c,#f85149);}
+.sr{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.sr-icon{font-size:14px;width:18px;text-align:center;}
+.sr-info{flex:1;}
+.sr-label{font-size:11px;color:var(--muted);margin-bottom:2px;}
+.sr-val{font-size:11px;color:#fff;min-width:30px;text-align:right;}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1f6feb,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid var(--purple);margin-bottom:8px;}
+.pname{font-size:16px;font-weight:700;color:#fff;}
+.pclass{color:var(--purple);font-size:11px;margin-bottom:6px;}
+.lvlbadge{display:inline-block;background:var(--purple2);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-bottom:6px;}
+.coins-row{color:var(--gold);font-size:12px;margin-top:6px;}
+.tag{font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;}
+.t-purple{background:rgba(139,92,246,.2);color:var(--purple);}
+.t-green{background:rgba(63,185,80,.2);color:var(--green);}
+.t-blue{background:rgba(88,166,255,.2);color:var(--blue);}
+.t-orange{background:rgba(227,169,58,.2);color:var(--orange);}
+.t-red{background:rgba(248,81,73,.2);color:var(--red);}
+.t-teal{background:rgba(20,184,166,.2);color:#14b8a6;}
+.qi{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;margin-bottom:7px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:border-color .15s;}
+.qi:hover{border-color:var(--purple);}
+.qi.done{opacity:.5;}
+.qi.done .qname{text-decoration:line-through;}
+.qcheck{width:15px;height:15px;border:2px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;}
+.qi.done .qcheck{background:var(--green2);border-color:var(--green2);color:#fff;}
+.qinfo{flex:1;min-width:0;}
+.qname{font-size:12px;color:var(--text);margin-bottom:3px;word-break:break-word;}
+.qmeta{display:flex;gap:5px;flex-wrap:wrap;}
+.qxp{font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;}
+.qdel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px;border-radius:3px;}
+.qdel:hover{color:var(--red);}
+.boss-hp-bg{height:12px;background:var(--bg3);border-radius:6px;overflow:hidden;margin:7px 0;}
+.boss-hp-fill{height:100%;background:linear-gradient(90deg,#b91c1c,#f85149);border-radius:6px;transition:width .8s ease;}
+.rank-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-bottom:6px;}
+.rank-a{background:rgba(227,169,58,.2);color:var(--orange);border:1px solid var(--orange);}
+.boss-emoji{font-size:44px;text-align:center;display:block;margin:8px 0;}
+.atk-btn{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-size:12px;cursor:pointer;width:100%;text-align:left;margin-bottom:6px;display:flex;align-items:center;gap:8px;transition:all .15s;}
+.atk-btn:hover{border-color:var(--red);background:rgba(248,81,73,.05);}
+.atk-dmg{margin-left:auto;color:var(--red);font-weight:700;font-size:11px;}
+.shop-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;transition:border-color .15s;}
+.shop-item:hover{border-color:var(--gold);}
+.shop-emoji{font-size:26px;margin-bottom:5px;}
+.shop-name{font-size:11px;color:var(--text);margin-bottom:4px;}
+.shop-price{color:var(--gold);font-size:11px;font-weight:700;}
+.shop-btn{margin-top:7px;background:rgba(212,160,23,.15);border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;width:100%;transition:all .15s;}
+.shop-btn:hover:not(:disabled){background:rgba(212,160,23,.3);}
+.shop-btn:disabled{opacity:.35;cursor:not-allowed;}
+.arc-active{background:var(--bg2);border:1px solid var(--purple);border-radius:8px;padding:13px;margin-bottom:10px;}
+.arc-title{color:var(--purple);font-size:14px;font-weight:700;margin-bottom:3px;}
+.arc-sub{color:var(--muted);font-size:11px;margin-bottom:10px;}
+.arc-locked{background:var(--bg2);border:1px solid var(--bg3);border-radius:8px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.arc-locked-name{color:var(--muted);font-size:12px;}
+.arc-locked-date{color:var(--bg3);font-size:10px;}
+.ach{display:flex;align-items:center;gap:10px;padding:9px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:7px;cursor:pointer;transition:border-color .15s;}
+.ach:hover{border-color:var(--gold);}
+.ach.locked{opacity:.35;filter:grayscale(1);}
+.ach-icon{font-size:22px;width:30px;text-align:center;}
+.ach-name{font-size:12px;color:var(--text);font-weight:600;}
+.ach-desc{font-size:10px;color:var(--muted);}
+.ach-xp{margin-left:auto;color:var(--gold);font-size:11px;font-weight:700;white-space:nowrap;}
+.sk-cat{margin-bottom:14px;}
+.sk-cat-title{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.sk-name{font-size:11px;color:var(--text);width:150px;flex-shrink:0;}
+.sk-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.sk-bar{height:100%;border-radius:3px;}
+.sk-ico{font-size:13px;}
+.ea{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;cursor:pointer;transition:all .15s;}
+.ea:hover{border-color:var(--green);}
+.ea.neg:hover{border-color:var(--red);}
+.ea-name{flex:1;font-size:11px;color:var(--text);}
+.ea-eff{font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px;}
+.ep{background:rgba(63,185,80,.15);color:var(--green);}
+.en{background:rgba(248,81,73,.15);color:var(--red);}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:18px;width:100%;max-width:380px;}
+.modal h3{color:#fff;font-size:14px;margin-bottom:14px;}
+.modal label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;}
+.modal input,.modal select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:12px;margin-bottom:10px;outline:none;}
+.modal input:focus,.modal select:focus{border-color:var(--purple);}
+.modal-btns{display:flex;gap:8px;margin-top:4px;}
+.btn-primary{flex:1;background:var(--purple2);border:none;border-radius:6px;padding:8px;color:#fff;font-size:12px;cursor:pointer;font-weight:600;}
+.btn-primary:hover{background:var(--purple);}
+.btn-cancel{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--muted);font-size:12px;cursor:pointer;}
+.add-btn{width:100%;background:var(--bg2);border:1px dashed var(--border);border-radius:6px;padding:10px;color:var(--muted);font-size:12px;cursor:pointer;text-align:center;margin-bottom:10px;transition:all .15s;}
+.add-btn:hover{border-color:var(--purple);color:var(--purple);}
+.notif{position:fixed;top:54px;right:12px;background:var(--bg1);border:1px solid var(--green);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--green);z-index:300;opacity:0;transform:translateY(-8px);transition:all .3s;pointer-events:none;max-width:220px;}
+.notif.show{opacity:1;transform:translateY(0);}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sh-title{font-size:13px;font-weight:700;color:#fff;}
+.sh-badge{font-size:10px;padding:2px 6px;background:var(--bg3);border-radius:4px;color:var(--muted);margin-left:6px;}
+.wallet{background:rgba(212,160,23,.08);border:1px solid rgba(212,160,23,.25);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.wallet-label{font-size:10px;color:var(--muted);}
+.wallet-amount{font-size:16px;font-weight:700;color:var(--gold);}
+#radarWrap{position:relative;height:220px;}
+</style>
+</head>
+<body>
+
+<div class="notif" id="notif"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="questModal" style="display:none;">
+  <div class="modal">
+    <h3>➕ Nueva Quest</h3>
+    <label>Nombre</label>
+    <input id="qName" placeholder="Ej: Hacer un proyecto con Python..."/>
+    <label>Tipo</label>
+    <select id="qType">
+      <option>Código</option><option>Aprendizaje</option><option>Trabajo</option>
+      <option>UOC</option><option>Portfolio</option><option>Hábito</option>
+    </select>
+    <label>XP</label>
+    <input id="qXP" type="number" value="100" min="10" max="1000"/>
+    <label>Dificultad</label>
+    <select id="qDiff">
+      <option>⭐ Fácil</option><option>⭐⭐ Media</option>
+      <option>⭐⭐⭐ Difícil</option><option>💀 Boss</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="addQuest()">Añadir Quest</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">⚡ YUNA.EXE</div>
+  <button class="tab active" onclick="go('hq',this)">🏠 HQ</button>
+  <button class="tab" onclick="go('quests',this)">⚔️ Quests</button>
+  <button class="tab" onclick="go('energy',this)">💜 Energy</button>
+  <button class="tab" onclick="go('boss',this)">💀 Boss</button>
+  <button class="tab" onclick="go('shop',this)">🛒 Shop</button>
+  <button class="tab" onclick="go('arcs',this)">🌟 Arcs</button>
+  <button class="tab" onclick="go('skills',this)">🔧 Skills</button>
+  <button class="tab" onclick="go('achieve',this)">🏆 Logros</button>
+</nav>
+
+<!-- HQ -->
+<div class="page active" id="page-hq">
+  <div class="g3">
+    <div class="card">
+      <div class="card-title">👤 Player ID</div>
+      <div class="avatar">🎮</div>
+      <div class="pname">Yuna</div>
+      <div class="pclass">Junior Eng → SWE @ F1 🏎️</div>
+      <div style="font-size:10px;color:var(--muted);">🏢 Timestamp · 🎓 UOC</div>
+      <div style="margin-top:9px;">
+        <div class="lvlbadge" id="lvlBadge">LEVEL 1</div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>XP</span><span id="xpText">0/1000</span></div>
+        <div class="bar-bg"><div class="bar b-purple" id="xpBar" style="width:0%"></div></div>
+        <div class="coins-row" id="coinsDisp">🟡 0 monedas</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Stats Radar</div>
+      <div id="radarWrap"><canvas id="radarChart" role="img" aria-label="Radar de stats">Python 1, Redes 5, BD 4, Seguridad 4, Algoritmos 1, DevOps 1.</canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ Daily Energy</div>
+      <div class="sr"><div class="sr-icon">❤️</div><div class="sr-info"><div class="sr-label">HP</div><div class="bar-bg"><div class="bar b-red" id="hpB" style="width:70%"></div></div></div><div class="sr-val" id="hpV">7/10</div></div>
+      <div class="sr"><div class="sr-icon">💜</div><div class="sr-info"><div class="sr-label">Mood</div><div class="bar-bg"><div class="bar b-purple" id="moodB" style="width:70%"></div></div></div><div class="sr-val" id="moodV">7/10</div></div>
+      <div class="sr"><div class="sr-icon">🎯</div><div class="sr-info"><div class="sr-label">Focus</div><div class="bar-bg"><div class="bar b-blue" id="focB" style="width:60%"></div></div></div><div class="sr-val" id="focV">6/10</div></div>
+      <div class="sr"><div class="sr-icon">⭐</div><div class="sr-info"><div class="sr-label">Motivación</div><div class="bar-bg"><div class="bar b-orange" id="motB" style="width:80%"></div></div></div><div class="sr-val" id="motV">8/10</div></div>
+      <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border);">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">💀 BOSS ACTUAL</div>
+        <div style="font-size:12px;color:#fff;margin-bottom:4px;">🐉 Preparación Pre-UOC</div>
+        <div class="boss-hp-bg"><div class="boss-hp-fill" id="dashBoss" style="width:100%"></div></div>
+        <div style="font-size:10px;color:var(--muted);" id="dashBossText">100/100 HP</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="sh"><div class="sh-title">📋 Today's Quests <span class="sh-badge" id="qCount">0/0</span></div></div>
+    <div id="hqQuests"></div>
+    <button class="add-btn" onclick="document.getElementById('questModal').style.display='flex'">+ Nueva Quest</button>
+  </div>
+</div>
+
+<!-- QUESTS -->
+<div class="page" id="page-quests">
+  <div class="sh"><div class="sh-title">⚔️ Quest Board</div><div style="font-size:11px;color:var(--gold);" id="availXP">XP disponible: 0</div></div>
+  <button class="add-btn" onclick="document.getElementById('questModal').style.display='flex'">+ Nueva Quest</button>
+  <div id="allQuests"></div>
+</div>
+
+<!-- ENERGY -->
+<div class="page" id="page-energy">
+  <div class="g2">
+    <div>
+      <div class="card"><div class="card-title">❤️ HP — Energía Física</div><div id="eaHP"></div></div>
+      <div class="card"><div class="card-title">🎯 Focus</div><div id="eaFoc"></div></div>
+    </div>
+    <div>
+      <div class="card"><div class="card-title">💜 Mood</div><div id="eaMood"></div></div>
+      <div class="card"><div class="card-title">⭐ Motivación</div><div id="eaMot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOSS -->
+<div class="page" id="page-boss">
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">💀 Current Boss</div>
+      <div class="rank-badge rank-a">A RANK</div>
+      <span class="boss-emoji">🐉</span>
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;">Preparación Pre-UOC</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Derrótalo antes de septiembre 2026</div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>Boss HP</span><span id="bossHpTxt">100/100</span></div>
+      <div class="boss-hp-bg"><div class="boss-hp-fill" id="bossHpBar" style="width:100%"></div></div>
+      <div style="color:var(--red);font-size:11px;font-weight:600;margin-top:5px;" id="bossCD">⏳ Calculando...</div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚔️ Attacks — Golpea hoy</div>
+      <div id="atkList"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:0;">
+    <div class="card-title">📜 Boss History</div>
+    <div style="color:var(--muted);font-size:12px;padding:16px;text-align:center;">🏆 Aquí aparecerán los bosses derrotados.</div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div class="wallet"><div><div class="wallet-label">Tu wallet</div><div class="wallet-amount" id="shopCoins">🟡 0 monedas</div></div><div style="font-size:10px;color:var(--muted);text-align:right;">Completa quests<br>para ganar monedas</div></div>
+  <div class="g4" id="shopGrid"></div>
+</div>
+
+<!-- ARCS -->
+<div class="page" id="page-arcs">
+  <div class="card">
+    <div class="sh"><div class="sh-title">🔥 Arc Activo</div></div>
+    <div class="arc-active">
+      <div class="arc-title">Arc 1: La Chispa</div>
+      <div class="arc-sub">De cero a tener un proyecto propio en GitHub · May → Sep 2026</div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>Progreso</span><span id="arcPct">0%</span></div>
+      <div class="bar-bg" style="height:8px;"><div class="bar b-purple" id="arcBar" style="width:0%"></div></div>
+      <div style="margin-top:10px;" id="arcList"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="sh-title" style="margin-bottom:10px;">🔒 Arcs Futuros</div>
+    <div class="arc-locked"><div style="font-size:18px;">📚</div><div><div class="arc-locked-name">Arc 2: La Estudiante</div><div class="arc-locked-date">Sep 2026 — Jun 2027 · 🔒 Locked</div></div></div>
+    <div class="arc-locked"><div style="font-size:18px;">💻</div><div><div class="arc-locked-name">Arc 3: La Engineera</div><div class="arc-locked-date">2027 — 2028 · 🔒 Locked</div></div></div>
+    <div class="arc-locked"><div style="font-size:18px;">🏢</div><div><div class="arc-locked-name">Arc 4: Junior Engineer</div><div class="arc-locked-date">2028 — 2029 · 🔒 Locked</div></div></div>
+    <div class="arc-locked" style="border-color:var(--gold);"><div style="font-size:18px;">🏎️</div><div><div class="arc-locked-name" style="color:var(--gold);">Arc 5: F1 Final Boss</div><div class="arc-locked-date">2029+ · 🔒 Final Boss</div></div></div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="page" id="page-skills">
+  <div class="g2" id="skillsGrid"></div>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<div class="page" id="page-achieve">
+  <div id="achList"></div>
+</div>
+
+<script>
+const DEFAULTS={
+  xp:0,coins:0,bossHp:100,hp:7,mood:7,focus:6,motiv:8,
+  quests:[
+    {id:1,name:'Instalar Python y hacer un proyecto pequeño',type:'Código',xp:150,diff:'⭐ Fácil',done:false},
+    {id:2,name:'Abrir GitHub y subir tu primer repositorio',type:'Código',xp:100,diff:'⭐ Fácil',done:false},
+    {id:3,name:'Completar 10 problemas Easy de LeetCode',type:'Aprendizaje',xp:200,diff:'⭐⭐ Media',done:false},
+    {id:4,name:'Completar CS50x Semanas 1 y 2',type:'Aprendizaje',xp:300,diff:'⭐⭐ Media',done:false},
+    {id:5,name:'Actualizar LinkedIn con rol en Timestamp',type:'Trabajo',xp:75,diff:'⭐ Fácil',done:false},
+    {id:6,name:'Matricularse en la UOC',type:'UOC',xp:50,diff:'⭐ Fácil',done:false},
+    {id:7,name:'Primer proyecto de portfolio completo',type:'Portfolio',xp:500,diff:'⭐⭐⭐ Difícil',done:false},
+    {id:8,name:'Contribuir a un proyecto open source',type:'Portfolio',xp:400,diff:'⭐⭐⭐ Difícil',done:false},
+  ],
+  arcItems:[
+    {text:'Python instalado y primer script propio',done:false},
+    {text:'GitHub con al menos 1 repositorio',done:false},
+    {text:'10 LeetCode Easy resueltos',done:false},
+    {text:'CS50x semanas 1-2 completadas',done:false},
+    {text:'LinkedIn actualizado',done:false},
+    {text:'Matriculada en la UOC',done:false},
+  ],
+  achievements:[
+    {id:'hello',icon:'🐍',name:'Hello, World',desc:'Tu primer código Python funcionando',xp:50,unlocked:false},
+    {id:'commit',icon:'📦',name:'First Commit',desc:'Primera contribución a Git',xp:100,unlocked:false},
+    {id:'leet10',icon:'🧩',name:'LeetCode Rookie',desc:'10 problemas de LeetCode resueltos',xp:200,unlocked:false},
+    {id:'student',icon:'🎓',name:'Estudiante Registrada',desc:'Primera matrícula en la UOC',xp:150,unlocked:false},
+    {id:'linkedin',icon:'💼',name:'LinkedIn Pro',desc:'Perfil profesional actualizado',xp:75,unlocked:false},
+    {id:'ship',icon:'🚀',name:'Ship It',desc:'Primer proyecto en GitHub',xp:500,unlocked:false},
+    {id:'streak7',icon:'🔥',name:'Racha de 7 días',desc:'7 días seguidos de estudio',xp:300,unlocked:false},
+    {id:'oss',icon:'🌍',name:'Open Source',desc:'PR enviado a un proyecto open source',xp:400,unlocked:false},
+    {id:'docker',icon:'🐳',name:'Docker Rookie',desc:'Primer proyecto dockerizado',xp:350,unlocked:false},
+    {id:'f1',icon:'🏎️',name:'F1 Final Boss',desc:'El objetivo final. Sigue el camino.',xp:9999,unlocked:false},
+  ],
+  nextQuestId:9,
+};
+
+let S;
+try{const sv=localStorage.getItem('yunaexe_v2');S=sv?JSON.parse(sv):JSON.parse(JSON.stringify(DEFAULTS));}
+catch(e){S=JSON.parse(JSON.stringify(DEFAULTS));}
+function save(){try{localStorage.setItem('yunaexe_v2',JSON.stringify(S));}catch(e){}}
+
+let notifTimer;
+function notify(msg,color){
+  const n=document.getElementById('notif');
+  n.textContent=msg;n.style.borderColor=color||'var(--green)';n.style.color=color||'var(--green)';
+  n.classList.add('show');clearTimeout(notifTimer);notifTimer=setTimeout(()=>n.classList.remove('show'),2600);
+}
+
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function tc(type){return{Código:'t-green',Aprendizaje:'t-purple',Trabajo:'t-orange',UOC:'t-blue',Portfolio:'t-red',Hábito:'t-teal'}[type]||'t-blue';}
+
+function updateXP(){
+  const lvl=Math.floor(S.xp/1000)+1;const pct=(S.xp%1000)/10;
+  document.getElementById('xpBar').style.width=pct+'%';
+  document.getElementById('xpText').textContent=S.xp+'/'+(lvl*1000);
+  document.getElementById('lvlBadge').textContent='LEVEL '+lvl;
+  const cd='🟡 '+S.coins+' monedas';
+  document.getElementById('coinsDisp').textContent=cd;
+  document.getElementById('shopCoins').textContent=cd;
+  save();
+}
+
+function renderEnergy(){
+  [['hp','hpB','hpV'],['mood','moodB','moodV'],['focus','focB','focV'],['motiv','motB','motV']].forEach(([k,b,v])=>{
+    const val=Math.max(0,Math.min(10,S[k]));
+    document.getElementById(b).style.width=(val*10)+'%';
+    document.getElementById(v).textContent=val+'/10';
+  });
+}
+
+function qHTML(q,i,showDel){
+  return`<div class="qi ${q.done?'done':''}" onclick="toggleQ(${i})">
+    <div class="qcheck">${q.done?'✓':''}</div>
+    <div class="qinfo">
+      <div class="qname">${q.name}</div>
+      <div class="qmeta"><span class="tag ${tc(q.type)}">${q.type}</span><span class="tag t-blue">${q.diff}</span></div>
+    </div>
+    <div class="qxp">+${q.xp}</div>
+    ${showDel?`<button class="qdel" onclick="delQ(event,${i})">✕</button>`:''}
+  </div>`;
+}
+function renderQuests(){
+  const done=S.quests.filter(q=>q.done).length;
+  document.getElementById('qCount').textContent=done+'/'+S.quests.length;
+  document.getElementById('availXP').textContent='XP disponible: '+S.quests.filter(q=>!q.done).reduce((a,q)=>a+q.xp,0);
+  document.getElementById('hqQuests').innerHTML=S.quests.map((q,i)=>qHTML(q,i,false)).join('');
+  document.getElementById('allQuests').innerHTML=S.quests.map((q,i)=>qHTML(q,i,true)).join('');
+}
+function toggleQ(i){
+  const q=S.quests[i];
+  if(!q.done){q.done=true;S.xp+=q.xp;S.coins+=q.xp;S.motiv=Math.min(10,S.motiv+1);
+  notify('✅ +'+q.xp+' XP · +'+q.xp+' 🟡');updateXP();renderEnergy();updateShopBtns();}
+  renderQuests();save();
+}
+function delQ(e,i){e.stopPropagation();S.quests.splice(i,1);renderQuests();save();}
+function closeModal(){document.getElementById('questModal').style.display='none';}
+function addQuest(){
+  const name=document.getElementById('qName').value.trim();
+  if(!name){notify('Escribe un nombre','var(--red)');return;}
+  S.quests.push({id:S.nextQuestId++,name,type:document.getElementById('qType').value,xp:parseInt(document.getElementById('qXP').value)||100,diff:document.getElementById('qDiff').value,done:false});
+  closeModal();document.getElementById('qName').value='';renderQuests();save();notify('⚔️ Nueva quest añadida!');
+}
+
+const attacks=[
+  {e:'🐍',n:'Ejercicio de Python',d:5},{e:'📦',n:'Subir algo a GitHub',d:5},
+  {e:'🧩',n:'Resolver LeetCode Easy',d:8},{e:'📚',n:'Estudiar 2h seguidas',d:10},
+  {e:'🎓',n:'Repasar plan UOC',d:5},
+];
+function renderBoss(){
+  document.getElementById('bossHpBar').style.width=S.bossHp+'%';
+  document.getElementById('bossHpTxt').textContent=S.bossHp+'/100';
+  document.getElementById('dashBoss').style.width=S.bossHp+'%';
+  document.getElementById('dashBossText').textContent=S.bossHp+'/100 HP';
+  const days=Math.max(0,Math.floor((new Date('2026-09-01')-new Date())/86400000));
+  document.getElementById('bossCD').textContent='⏳ '+days+' días restantes';
+  document.getElementById('atkList').innerHTML=attacks.map(a=>`<button class="atk-btn" onclick="attack(${a.d},'${a.n}')"><span>${a.e}</span><span>${a.n}</span><span class="atk-dmg">-${a.d} HP</span></button>`).join('');
+}
+function attack(dmg,name){
+  if(S.bossHp<=0){notify('¡Boss derrotado! 🏆','var(--gold)');return;}
+  S.bossHp=Math.max(0,S.bossHp-dmg);S.xp+=dmg*2;S.coins+=dmg;
+  if(S.bossHp<=0){S.xp+=500;S.coins+=500;notify('🏆 ¡BOSS DERROTADO! +500 XP!','var(--gold)');}
+  else notify('⚔️ '+name+' → -'+dmg+' HP!');
+  renderBoss();updateXP();save();
+}
+
+const shopItems=[
+  {e:'🍕',n:'Pizza con amigas',p:50},{e:'📚',n:'Libro técnico',p:80},
+  {e:'🎮',n:'Videojuego nuevo',p:150},{e:'👟',n:'Ropa nueva',p:200},
+  {e:'🎤',n:'Concierto',p:300},{e:'✈️',n:'Viaje corto',p:800},{e:'🏎️',n:'Experiencia F1',p:2000},
+];
+function renderShop(){
+  document.getElementById('shopGrid').innerHTML=shopItems.map((item,i)=>`
+    <div class="shop-item"><div class="shop-emoji">${item.e}</div><div class="shop-name">${item.n}</div>
+    <div class="shop-price">🟡 ${item.p}</div>
+    <button class="shop-btn" id="sbtn${i}" onclick="buyItem(${i})" ${S.coins<item.p?'disabled':''}>${S.coins>=item.p?'Comprar':'Sin monedas'}</button></div>
+  `).join('');
+}
+function updateShopBtns(){shopItems.forEach((item,i)=>{const b=document.getElementById('sbtn'+i);if(b){b.disabled=S.coins<item.p;b.textContent=S.coins>=item.p?'Comprar':'Sin monedas';}});}
+function buyItem(i){
+  const item=shopItems[i];if(S.coins<item.p)return;
+  S.coins-=item.p;S.motiv=Math.min(10,S.motiv+2);
+  notify('🛒 '+item.n,'var(--gold)');updateXP();renderShop();renderEnergy();save();
+}
+
+function renderArcs(){
+  const done=S.arcItems.filter(a=>a.done).length;
+  const pct=Math.round((done/S.arcItems.length)*100);
+  document.getElementById('arcPct').textContent=pct+'%';
+  document.getElementById('arcBar').style.width=pct+'%';
+  document.getElementById('arcList').innerHTML=S.arcItems.map((item,i)=>`
+    <div class="qi ${item.done?'done':''}" onclick="toggleArc(${i})" style="margin-bottom:5px;">
+      <div class="qcheck">${item.done?'✓':''}</div>
+      <div class="qinfo"><div class="qname">${item.text}</div></div>
+    </div>`).join('');
+}
+function toggleArc(i){S.arcItems[i].done=!S.arcItems[i].done;renderArcs();save();}
+
+const EA={
+  hp:[{e:'🍎',n:'Comer bien',v:1,s:'hp',p:true},{e:'😴',n:'Dormir 7-8h',v:4,s:'hp',p:true},{e:'💧',n:'Hidratarme',v:1,s:'hp',p:true},{e:'🏃',n:'Hacer ejercicio',v:2,s:'hp',p:true},{e:'📱',n:'Doomscroll >1h',v:-2,s:'hp',p:false},{e:'😴',n:'Dormir <6h',v:-3,s:'hp',p:false}],
+  mood:[{e:'🎵',n:'Escuchar música',v:1,s:'mood',p:true},{e:'👥',n:'Quedar con amigas',v:2,s:'mood',p:true},{e:'🎮',n:'Videojuego un rato',v:1,s:'mood',p:true},{e:'📓',n:'Journaling',v:1,s:'mood',p:true},{e:'📱',n:'Redes >30min',v:-1,s:'mood',p:false},{e:'😤',n:'Conflicto sin resolver',v:-2,s:'mood',p:false}],
+  focus:[{e:'📖',n:'Bloque estudio 2h',v:2,s:'focus',p:true},{e:'💻',n:'Sesión código 1h',v:2,s:'focus',p:true},{e:'🧘',n:'Meditación 10min',v:1,s:'focus',p:true},{e:'☕',n:'Café + tarea',v:1,s:'focus',p:true},{e:'🔔',n:'Notificaciones on',v:-2,s:'focus',p:false},{e:'📱',n:'Doomscroll antes estudiar',v:-2,s:'focus',p:false}],
+  motiv:[{e:'✅',n:'Completar una quest',v:2,s:'motiv',p:true},{e:'🏆',n:'Desbloquear achievement',v:3,s:'motiv',p:true},{e:'📺',n:'Ver contenido F1',v:1,s:'motiv',p:true},{e:'📖',n:'Leer sobre SWE de éxito',v:1,s:'motiv',p:true},{e:'❌',n:'Semana sin avance',v:-3,s:'motiv',p:false}],
+};
+function renderEnergyMenu(){
+  const map={hp:'eaHP',mood:'eaMood',focus:'eaFoc',motiv:'eaMot'};
+  Object.entries(map).forEach(([key,elId])=>{
+    document.getElementById(elId).innerHTML=EA[key].map(a=>`
+      <div class="ea ${a.p?'':'neg'}" onclick="applyE('${a.s}',${a.v},'${a.n}')">
+        <span>${a.e}</span><span class="ea-name">${a.n}</span>
+        <span class="ea-eff ${a.p?'ep':'en'}">${a.v>0?'+':''}${a.v}</span>
+      </div>`).join('');
+  });
+}
+function applyE(stat,val,name){
+  S[stat]=Math.max(0,Math.min(10,S[stat]+val));
+  notify((val>0?'💚 ':'❤️ ')+name+' → '+(val>0?'+':'')+val,val>0?'var(--green)':'var(--red)');
+  renderEnergy();save();
+}
+
+function renderAchievements(){
+  document.getElementById('achList').innerHTML=S.achievements.map((a,i)=>`
+    <div class="ach ${a.unlocked?'':'locked'}" onclick="unlockAch(${i})">
+      <div class="ach-icon">${a.icon}</div>
+      <div><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div></div>
+      <div class="ach-xp">${a.unlocked?'✅ Conseguido':'+'+a.xp+' XP'}</div>
+    </div>`).join('');
+}
+function unlockAch(i){
+  const a=S.achievements[i];if(a.unlocked)return;
+  a.unlocked=true;S.xp+=a.xp;S.coins+=a.xp;S.motiv=Math.min(10,S.motiv+2);
+  notify('🏆 '+a.name+' +'+a.xp+' XP','var(--gold)');
+  updateXP();renderAchievements();renderEnergy();save();
+}
+
+const skills=[
+  {cat:'🐍 Python',color:'#3fb950',items:[{n:'Variables y tipos',p:10},{n:'Funciones y bucles',p:5},{n:'Listas y dicts',p:0},{n:'OOP básico',p:0},{n:'APIs y requests',p:0}]},
+  {cat:'📦 Git & GitHub',color:'#e3a93a',items:[{n:'Primer commit',p:0},{n:'Branches y merges',p:0},{n:'Pull requests',p:0},{n:'Open source',p:0}]},
+  {cat:'🧩 Algoritmos',color:'#58a6ff',items:[{n:'Arrays y strings',p:5},{n:'Two pointers',p:0},{n:'Recursividad',p:0},{n:'Grafos',p:0}]},
+  {cat:'🗄️ Bases de Datos',color:'#14b8a6',items:[{n:'SQL básico',p:70},{n:'Diseño relacional',p:60},{n:'PostgreSQL',p:10},{n:'NoSQL',p:0}]},
+  {cat:'🌐 Redes',color:'#8b5cf6',items:[{n:'TCP/IP',p:80},{n:'DNS, HTTP',p:75},{n:'APIs REST',p:20},{n:'Seguridad',p:65}]},
+  {cat:'🔧 DevOps',color:'#f85149',items:[{n:'Linux y terminal',p:60},{n:'Docker',p:0},{n:'CI/CD',p:0},{n:'Cloud',p:0}]},
+];
+function renderSkills(){
+  document.getElementById('skillsGrid').innerHTML=skills.map(cat=>`
+    <div class="card sk-cat"><div class="sk-cat-title">${cat.cat}</div>
+    ${cat.items.map(s=>`<div class="sk-row"><div class="sk-name">${s.n}</div><div class="sk-bar-bg"><div class="sk-bar" style="width:${s.p}%;background:${cat.color};"></div></div><div class="sk-ico">${s.p>0?'✅':'🔒'}</div></div>`).join('')}
+    </div>`).join('');
+}
+
+function renderRadar(){
+  const ctx=document.getElementById('radarChart').getContext('2d');
+  new Chart(ctx,{type:'radar',data:{labels:['Python','Redes','BD','Seguridad','Algoritmos','DevOps'],datasets:[{label:'Yuna',data:[1,5,4,4,1,1],backgroundColor:'rgba(139,92,246,0.2)',borderColor:'#8b5cf6',borderWidth:2,pointBackgroundColor:'#8b5cf6',pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:10,ticks:{display:false},grid:{color:'rgba(48,54,61,0.8)'},pointLabels:{color:'#8b949e',font:{size:10}},angleLines:{color:'rgba(48,54,61,0.8)'}}}}});
+}
+
+renderRadar();renderEnergy();renderQuests();renderEnergyMenu();
+renderBoss();renderShop();renderArcs();renderSkills();renderAchievements();updateXP();
+</script>
+</body>
+</html>
