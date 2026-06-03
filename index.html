@@ -27,7 +27,6 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
-.g5{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;}
 @media(max-width:600px){.g2,.g3{grid-template-columns:1fr;}}
 .bar-bg{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;margin:3px 0;}
 .bar{height:100%;border-radius:4px;transition:width .5s ease;}
@@ -37,7 +36,6 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .b-orange{background:linear-gradient(90deg,#b45309,#e3a93a);}
 .b-red{background:linear-gradient(90deg,#b91c1c,#f85149);}
 .b-teal{background:linear-gradient(90deg,#0f766e,#14b8a6);}
-.b-gold{background:linear-gradient(90deg,#92400e,#d4a017);}
 .sr{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .sr-icon{font-size:14px;width:18px;text-align:center;}
 .sr-info{flex:1;}
@@ -45,9 +43,9 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .sr-val{font-size:11px;color:#fff;min-width:30px;text-align:right;}
 .avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1f6feb,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid var(--purple);margin-bottom:8px;}
 .pname{font-size:16px;font-weight:700;color:#fff;}
-.pclass{color:var(--purple);font-size:11px;margin-bottom:6px;}
+.pclass{color:var(--purple);font-size:11px;margin-bottom:4px;}
 .lvlbadge{display:inline-block;background:var(--purple2);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-bottom:6px;}
-.coins-row{color:var(--gold);font-size:12px;margin-top:6px;}
+.coins-row{color:var(--gold);font-size:12px;margin-top:4px;}
 .tag{font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;}
 .t-purple{background:rgba(139,92,246,.2);color:var(--purple);}
 .t-green{background:rgba(63,185,80,.2);color:var(--green);}
@@ -56,6 +54,21 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .t-red{background:rgba(248,81,73,.2);color:var(--red);}
 .t-teal{background:rgba(20,184,166,.2);color:var(--teal);}
 .t-gold{background:rgba(212,160,23,.2);color:var(--gold);}
+
+/* DAILY MISSION */
+.dm{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;gap:10px;transition:all .2s;}
+.dm:hover{border-color:var(--purple);}
+.dm.done{opacity:.45;border-color:var(--green2);}
+.dm-check{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;font-size:11px;}
+.dm.done .dm-check{background:var(--green2);border-color:var(--green2);color:#fff;}
+.dm-info{flex:1;min-width:0;}
+.dm-name{font-size:12px;color:var(--text);margin-bottom:3px;}
+.dm.done .dm-name{text-decoration:line-through;color:var(--muted);}
+.dm-meta{display:flex;gap:6px;align-items:center;}
+.dm-xp{font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;}
+.dm-icon{font-size:18px;flex-shrink:0;}
+
+/* QUEST ITEM */
 .qi{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;margin-bottom:7px;display:flex;align-items:center;gap:9px;cursor:pointer;transition:border-color .15s;}
 .qi:hover{border-color:var(--purple);}
 .qi.done{opacity:.5;}
@@ -68,15 +81,18 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .qxp{font-size:11px;color:var(--gold);font-weight:700;white-space:nowrap;}
 .qdel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px;border-radius:3px;}
 .qdel:hover{color:var(--red);}
+
+/* BOSS */
 .boss-hp-bg{height:12px;background:var(--bg3);border-radius:6px;overflow:hidden;margin:7px 0;}
 .boss-hp-fill{height:100%;background:linear-gradient(90deg,#b91c1c,#f85149);border-radius:6px;transition:width .8s ease;}
 .rank-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-bottom:6px;}
 .rank-a{background:rgba(227,169,58,.2);color:var(--orange);border:1px solid var(--orange);}
-.rank-s{background:rgba(248,81,73,.2);color:var(--red);border:1px solid var(--red);}
 .boss-emoji{font-size:44px;text-align:center;display:block;margin:8px 0;}
 .atk-btn{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 11px;color:var(--text);font-size:12px;cursor:pointer;width:100%;text-align:left;margin-bottom:6px;display:flex;align-items:center;gap:8px;transition:all .15s;}
 .atk-btn:hover{border-color:var(--red);background:rgba(248,81,73,.05);}
 .atk-dmg{margin-left:auto;color:var(--red);font-weight:700;font-size:11px;}
+
+/* SHOP */
 .shop-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;transition:border-color .15s;}
 .shop-item:hover{border-color:var(--gold);}
 .shop-item.purchased{border-color:var(--green2);opacity:.6;}
@@ -87,14 +103,10 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .shop-btn{margin-top:7px;background:rgba(212,160,23,.15);border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;width:100%;transition:all .15s;}
 .shop-btn:hover:not(:disabled){background:rgba(212,160,23,.3);}
 .shop-btn:disabled{opacity:.35;cursor:not-allowed;}
-.arc-active{background:var(--bg2);border:1px solid var(--purple);border-radius:8px;padding:13px;margin-bottom:10px;}
-.arc-title{color:var(--purple);font-size:14px;font-weight:700;margin-bottom:3px;}
-.arc-sub{color:var(--muted);font-size:11px;margin-bottom:10px;}
-.arc-locked{background:var(--bg2);border:1px solid var(--bg3);border-radius:8px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
-.arc-locked-name{color:var(--muted);font-size:12px;}
-.arc-locked-date{color:var(--bg3);font-size:10px;}
+
+/* ACHIEVEMENTS */
 .ach{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:7px;transition:border-color .15s;}
-.ach.unlocked{border-color:var(--gold);background:rgba(212,160,23,.05);}
+.ach.unlocked{border-color:var(--gold);background:rgba(212,160,23,.04);}
 .ach.locked{opacity:.3;filter:grayscale(1);}
 .ach-icon{font-size:24px;width:32px;text-align:center;flex-shrink:0;}
 .ach-body{flex:1;min-width:0;}
@@ -102,14 +114,15 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .ach-desc{font-size:10px;color:var(--muted);line-height:1.4;}
 .ach-trigger{font-size:10px;color:var(--blue);margin-top:3px;}
 .ach-xp{margin-left:auto;color:var(--gold);font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0;}
-.ach-cat{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;display:inline-block;margin-bottom:3px;}
-.sk-cat{margin-bottom:14px;}
-.sk-cat-title{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--border);}
-.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.sk-name{font-size:11px;color:var(--text);width:150px;flex-shrink:0;}
-.sk-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
-.sk-bar{height:100%;border-radius:3px;}
-.sk-ico{font-size:13px;}
+.ach-cat-badge{font-size:9px;padding:1px 5px;border-radius:3px;font-weight:600;display:inline-block;margin-bottom:3px;}
+
+/* MISC */
+.arc-active{background:var(--bg2);border:1px solid var(--purple);border-radius:8px;padding:13px;margin-bottom:10px;}
+.arc-title{color:var(--purple);font-size:14px;font-weight:700;margin-bottom:3px;}
+.arc-sub{color:var(--muted);font-size:11px;margin-bottom:10px;}
+.arc-locked{background:var(--bg2);border:1px solid var(--bg3);border-radius:8px;padding:10px 13px;margin-bottom:7px;display:flex;align-items:center;gap:10px;}
+.arc-locked-name{color:var(--muted);font-size:12px;}
+.arc-locked-date{color:var(--bg3);font-size:10px;}
 .ea{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;cursor:pointer;transition:all .15s;}
 .ea:hover{border-color:var(--green);}
 .ea.neg:hover{border-color:var(--red);}
@@ -117,8 +130,13 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .ea-eff{font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px;}
 .ep{background:rgba(63,185,80,.15);color:var(--green);}
 .en{background:rgba(248,81,73,.15);color:var(--red);}
+.sk-cat-title{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.sk-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.sk-name{font-size:11px;color:var(--text);width:150px;flex-shrink:0;}
+.sk-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.sk-bar{height:100%;border-radius:3px;}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px;}
-.modal{background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:18px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto;}
+.modal{background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:18px;width:100%;max-width:400px;}
 .modal h3{color:#fff;font-size:14px;margin-bottom:14px;}
 .modal label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;}
 .modal input,.modal select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-size:12px;margin-bottom:10px;outline:none;}
@@ -129,7 +147,7 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .btn-cancel{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--muted);font-size:12px;cursor:pointer;}
 .add-btn{width:100%;background:var(--bg2);border:1px dashed var(--border);border-radius:6px;padding:10px;color:var(--muted);font-size:12px;cursor:pointer;text-align:center;margin-bottom:10px;transition:all .15s;}
 .add-btn:hover{border-color:var(--purple);color:var(--purple);}
-.notif{position:fixed;top:54px;right:12px;background:var(--bg1);border:1px solid var(--green);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--green);z-index:300;opacity:0;transform:translateY(-8px);transition:all .3s;pointer-events:none;max-width:240px;line-height:1.4;}
+.notif{position:fixed;top:54px;right:12px;background:var(--bg1);border:1px solid var(--green);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--green);z-index:300;opacity:0;transform:translateY(-8px);transition:all .3s;pointer-events:none;max-width:240px;line-height:1.5;}
 .notif.show{opacity:1;transform:translateY(0);}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .sh-title{font-size:13px;font-weight:700;color:#fff;}
@@ -149,40 +167,51 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 .filter-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);font-size:11px;cursor:pointer;transition:all .15s;}
 .filter-btn.active{background:var(--purple2);border-color:var(--purple);color:#fff;}
 .ach-section-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
-.progress-ring{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
-.prog-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;flex:1;min-width:100px;}
+.prog-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.prog-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;flex:1;min-width:90px;}
 .prog-label{font-size:10px;color:var(--muted);margin-bottom:3px;}
-.prog-val{font-size:16px;font-weight:700;color:#fff;}
+.prog-val{font-size:15px;font-weight:700;color:#fff;}
+
+/* DAILY HEADER */
+.daily-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.daily-date{font-size:11px;color:var(--muted);}
+.daily-refresh{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:4px 10px;color:var(--muted);font-size:11px;cursor:pointer;transition:all .15s;}
+.daily-refresh:hover{border-color:var(--purple);color:var(--purple);}
+.daily-xp-bar{margin-bottom:12px;}
+.daily-xp-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;}
+.streak-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(227,169,58,.15);border:1px solid rgba(227,169,58,.3);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--orange);margin-bottom:10px;}
 </style>
 </head>
 <body>
 
 <div class="notif" id="notif"></div>
 
+<!-- MODAL QUEST GRANDE -->
 <div class="modal-bg" id="questModal" style="display:none;">
   <div class="modal">
-    <h3>➕ Nueva Quest</h3>
+    <h3>➕ Nueva Quest Principal</h3>
     <label>Nombre</label>
-    <input id="qName" placeholder="Ej: Hacer un proyecto con Python..."/>
+    <input id="qName" placeholder="Ej: Construir una API REST con Python..."/>
     <label>Tipo</label>
     <select id="qType">
       <option>Código</option><option>Aprendizaje</option><option>Trabajo</option>
-      <option>UOC</option><option>Portfolio</option><option>Hábito</option>
+      <option>UOC</option><option>Portfolio</option><option>Hábito</option><option>Algoritmos</option><option>DevOps</option>
     </select>
     <label>XP</label>
-    <input id="qXP" type="number" value="200" min="10" max="2000"/>
+    <input id="qXP" type="number" value="400" min="50" max="2000"/>
     <label>Dificultad</label>
     <select id="qDiff">
       <option>⭐ Fácil</option><option>⭐⭐ Media</option>
       <option>⭐⭐⭐ Difícil</option><option>💀 Boss</option>
     </select>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-cancel" onclick="closeModal('questModal')">Cancelar</button>
       <button class="btn-primary" onclick="addQuest()">Añadir Quest</button>
     </div>
   </div>
 </div>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="logo">⚡ YUNA.EXE</div>
   <button class="tab active" onclick="go('hq',this)">🏠 HQ</button>
@@ -199,24 +228,27 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 <!-- HQ -->
 <div class="page active" id="page-hq">
   <div class="g3">
+    <!-- PLAYER -->
     <div class="card">
       <div class="card-title">👤 Player ID</div>
       <div class="avatar">🎮</div>
       <div class="pname">Yuna</div>
       <div class="pclass">Junior Consultant → SWE @ F1 🏎️</div>
-      <div style="font-size:10px;color:var(--muted);">🏢 Timestamp Group · 🎓 UOC Sep 2026</div>
+      <div style="font-size:10px;color:var(--muted);">🏢 Timestamp · 🎓 UOC Sep 2026</div>
       <div style="margin-top:9px;">
         <div class="lvlbadge" id="lvlBadge">LEVEL 1</div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>XP</span><span id="xpText">0/2000</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>XP Total</span><span id="xpText">0/2000</span></div>
         <div class="bar-bg"><div class="bar b-purple" id="xpBar" style="width:0%"></div></div>
         <div class="coins-row" id="coinsDisp">🟡 0 monedas</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:4px;" id="achCount">🏆 0 logros desbloqueados</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px;" id="achCount">🏆 0 logros</div>
       </div>
     </div>
+    <!-- RADAR -->
     <div class="card">
       <div class="card-title">📊 Stats Radar</div>
       <div id="radarWrap"><canvas id="radarChart"></canvas></div>
     </div>
+    <!-- ENERGY -->
     <div class="card">
       <div class="card-title">⚡ Daily Energy</div>
       <div class="sr"><div class="sr-icon">❤️</div><div class="sr-info"><div class="sr-label">HP</div><div class="bar-bg"><div class="bar b-red" id="hpB" style="width:70%"></div></div></div><div class="sr-val" id="hpV">7/10</div></div>
@@ -225,24 +257,39 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
       <div class="sr"><div class="sr-icon">⭐</div><div class="sr-info"><div class="sr-label">Motivación</div><div class="bar-bg"><div class="bar b-orange" id="motB" style="width:80%"></div></div></div><div class="sr-val" id="motV">8/10</div></div>
       <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border);">
         <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">💀 BOSS ACTUAL</div>
-        <div style="font-size:12px;color:#fff;margin-bottom:4px;">🐉 Preparación Pre-UOC</div>
+        <div style="font-size:12px;color:#fff;margin-bottom:3px;">🐉 Preparación Pre-UOC</div>
         <div class="boss-hp-bg"><div class="boss-hp-fill" id="dashBoss" style="width:100%"></div></div>
         <div style="font-size:10px;color:var(--muted);" id="dashBossText">100/100 HP</div>
       </div>
     </div>
   </div>
+
+  <!-- DAILY MISSIONS -->
   <div class="card">
-    <div class="sh"><div class="sh-title">📋 Today's Quests <span class="sh-badge" id="qCount">0/0</span></div></div>
-    <div id="hqQuests"></div>
-    <button class="add-btn" onclick="document.getElementById('questModal').style.display='flex'">+ Nueva Quest</button>
+    <div class="daily-header">
+      <div>
+        <div class="sh-title" style="margin-bottom:2px;">📅 Daily Missions <span class="sh-badge" id="dmCount">0/5</span></div>
+        <div class="daily-date" id="dailyDate"></div>
+      </div>
+      <button class="daily-refresh" onclick="rerollDaily()">🎲 Reroll</button>
+    </div>
+    <div class="streak-badge" id="streakBadge">🔥 Racha: 0 días</div>
+    <div class="daily-xp-bar">
+      <div class="daily-xp-label"><span>XP del día</span><span id="dailyXPText">0 / 0</span></div>
+      <div class="bar-bg" style="height:8px;"><div class="bar b-green" id="dailyXPBar" style="width:0%"></div></div>
+    </div>
+    <div id="dailyMissions"></div>
   </div>
 </div>
 
-<!-- QUESTS -->
+<!-- QUEST BOARD (objetivos grandes) -->
 <div class="page" id="page-quests">
+  <div style="background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.2);border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--blue);">
+    ℹ️ Las <strong>Quests</strong> son tus objetivos grandes a largo plazo. Las <strong>Daily Missions</strong> del HQ son las tareas del día.
+  </div>
   <div class="sh"><div class="sh-title">⚔️ Quest Board</div><div style="font-size:11px;color:var(--gold);" id="availXP"></div></div>
   <div class="filter-row" id="questFilters"></div>
-  <button class="add-btn" onclick="document.getElementById('questModal').style.display='flex'">+ Nueva Quest</button>
+  <button class="add-btn" onclick="document.getElementById('questModal').style.display='flex'">+ Nueva Quest Principal</button>
   <div id="allQuests"></div>
 </div>
 
@@ -250,7 +297,7 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 <div class="page" id="page-energy">
   <div class="g2">
     <div>
-      <div class="card"><div class="card-title">❤️ HP — Energía Física</div><div id="eaHP"></div></div>
+      <div class="card"><div class="card-title">❤️ HP</div><div id="eaHP"></div></div>
       <div class="card"><div class="card-title">🎯 Focus</div><div id="eaFoc"></div></div>
     </div>
     <div>
@@ -271,25 +318,16 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
       <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Derrótalo antes de septiembre 2026</div>
       <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:3px;"><span>Boss HP</span><span id="bossHpTxt">100/100</span></div>
       <div class="boss-hp-bg"><div class="boss-hp-fill" id="bossHpBar" style="width:100%"></div></div>
-      <div style="color:var(--red);font-size:11px;font-weight:600;margin-top:5px;" id="bossCD">⏳ Calculando...</div>
+      <div style="color:var(--red);font-size:11px;font-weight:600;margin-top:5px;" id="bossCD"></div>
     </div>
-    <div class="card">
-      <div class="card-title">⚔️ Attacks</div>
-      <div id="atkList"></div>
-    </div>
+    <div class="card"><div class="card-title">⚔️ Attacks</div><div id="atkList"></div></div>
   </div>
-  <div class="card">
-    <div class="card-title">📜 Boss History — Derrotados</div>
-    <div style="color:var(--muted);font-size:12px;padding:16px;text-align:center;">🏆 Aquí aparecerán los bosses derrotados.</div>
-  </div>
+  <div class="card"><div class="card-title">📜 Boss History</div><div style="color:var(--muted);font-size:12px;padding:16px;text-align:center;">🏆 Aquí aparecerán los bosses derrotados.</div></div>
 </div>
 
 <!-- SHOP -->
 <div class="page" id="page-shop">
-  <div class="wallet">
-    <div><div class="wallet-label">Tu wallet</div><div class="wallet-amount" id="shopCoins">🟡 0 monedas</div></div>
-    <div style="font-size:10px;color:var(--muted);text-align:right;">Completa quests<br>para ganar monedas</div>
-  </div>
+  <div class="wallet"><div><div class="wallet-label">Tu wallet</div><div class="wallet-amount" id="shopCoins">🟡 0 monedas</div></div><div style="font-size:10px;color:var(--muted);text-align:right;">Completa missions<br>para ganar monedas</div></div>
   <div class="filter-row" id="shopFilters"></div>
   <div class="g4" id="shopGrid"></div>
 </div>
@@ -308,21 +346,19 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
   </div>
   <div class="card">
     <div class="sh-title" style="margin-bottom:10px;">🔒 Arcs Futuros</div>
-    <div class="arc-locked"><div style="font-size:18px;">📚</div><div><div class="arc-locked-name">Arc 2: La Estudiante</div><div class="arc-locked-date">Sep 2026 — Jun 2027 · UOC primer año · 🔒 Locked</div></div></div>
-    <div class="arc-locked"><div style="font-size:18px;">💻</div><div><div class="arc-locked-name">Arc 3: La Engineera</div><div class="arc-locked-date">2027 — 2028 · Portfolio sólido, open source · 🔒 Locked</div></div></div>
-    <div class="arc-locked"><div style="font-size:18px;">🏢</div><div><div class="arc-locked-name">Arc 4: Junior SWE</div><div class="arc-locked-date">2028 — 2029 · Primer trabajo como dev · 🔒 Locked</div></div></div>
-    <div class="arc-locked" style="border-color:var(--gold);"><div style="font-size:18px;">🏎️</div><div><div class="arc-locked-name" style="color:var(--gold);">Arc 5: F1 Final Boss</div><div class="arc-locked-date">2029+ · McLaren · Mercedes · Red Bull · 🔒 Final Boss</div></div></div>
+    <div class="arc-locked"><div style="font-size:18px;">📚</div><div><div class="arc-locked-name">Arc 2: La Estudiante</div><div class="arc-locked-date">Sep 2026 — Jun 2027 · 🔒</div></div></div>
+    <div class="arc-locked"><div style="font-size:18px;">💻</div><div><div class="arc-locked-name">Arc 3: La Engineera</div><div class="arc-locked-date">2027 — 2028 · 🔒</div></div></div>
+    <div class="arc-locked"><div style="font-size:18px;">🏢</div><div><div class="arc-locked-name">Arc 4: Junior SWE</div><div class="arc-locked-date">2028 — 2029 · 🔒</div></div></div>
+    <div class="arc-locked" style="border-color:var(--gold);"><div style="font-size:18px;">🏎️</div><div><div class="arc-locked-name" style="color:var(--gold);">Arc 5: F1 Final Boss</div><div class="arc-locked-date">2029+ · McLaren · Mercedes · Red Bull · 🔒</div></div></div>
   </div>
 </div>
 
 <!-- SKILLS -->
-<div class="page" id="page-skills">
-  <div class="g2" id="skillsGrid"></div>
-</div>
+<div class="page" id="page-skills"><div class="g2" id="skillsGrid"></div></div>
 
 <!-- ACHIEVEMENTS -->
 <div class="page" id="page-achieve">
-  <div class="progress-ring" id="achProgress"></div>
+  <div class="prog-row" id="achProgress"></div>
   <div class="filter-row" id="achFilters"></div>
   <div id="achList"></div>
 </div>
@@ -331,151 +367,292 @@ body{background:var(--bg0);color:var(--text);font-family:'Segoe UI',system-ui,sa
 <div class="page" id="page-stats">
   <div class="card" style="margin-bottom:10px;">
     <div class="sh-title" style="margin-bottom:4px;">📊 Editar mis Stats</div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Actualiza cuando aprendas algo nuevo. El radar se actualiza al instante y algunos logros se desbloquean solos.</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Actualiza cuando aprendas algo nuevo. El radar y los logros se actualizan al instante.</div>
     <div id="statEditor"></div>
   </div>
-  <div class="card">
-    <div class="card-title">Vista previa</div>
-    <div style="position:relative;height:260px;"><canvas id="radarChart2"></canvas></div>
-  </div>
+  <div class="card"><div class="card-title">Vista previa</div><div style="position:relative;height:260px;"><canvas id="radarChart2"></canvas></div></div>
 </div>
 
 <script>
-// ── ACHIEVEMENTS DEFINITION ───────────────────────────────
-// trigger: { type: 'quest'|'stat'|'xp'|'quests_done'|'manual', ... }
+// ─────────────────────────────────────────────
+// DAILY MISSIONS POOL — tareas pequeñas diarias
+// ─────────────────────────────────────────────
+const DAILY_POOL = [
+  // Python
+  {id:'d1',icon:'🐍',name:'Escribir 20 líneas de Python',cat:'Código',xp:40},
+  {id:'d2',icon:'🐍',name:'Completar un ejercicio de Python (cualquier plataforma)',cat:'Código',xp:50},
+  {id:'d3',icon:'🐍',name:'Revisar código que escribiste ayer y mejorarlo',cat:'Código',xp:35},
+  {id:'d4',icon:'🐍',name:'Aprender una función nueva de Python y usarla',cat:'Código',xp:45},
+  // Algoritmos
+  {id:'d5',icon:'🧩',name:'Resolver 1 problema Easy de LeetCode',cat:'Algoritmos',xp:60},
+  {id:'d6',icon:'🧩',name:'Revisar la solución de un problema LeetCode anterior',cat:'Algoritmos',xp:30},
+  {id:'d7',icon:'🧩',name:'Leer la explicación de un algoritmo nuevo',cat:'Algoritmos',xp:35},
+  // Git
+  {id:'d8',icon:'📦',name:'Hacer al menos 1 commit en GitHub',cat:'Git',xp:40},
+  {id:'d9',icon:'📦',name:'Revisar el historial de commits de un repo tuyo',cat:'Git',xp:25},
+  {id:'d10',icon:'📦',name:'Crear o actualizar el README de un proyecto',cat:'Git',xp:35},
+  // Estudio
+  {id:'d11',icon:'📚',name:'Estudiar 45 minutos seguidos sin móvil',cat:'Estudio',xp:55},
+  {id:'d12',icon:'📚',name:'Leer 20 páginas de un libro técnico',cat:'Estudio',xp:40},
+  {id:'d13',icon:'📚',name:'Ver una lección de CS50x',cat:'Estudio',xp:50},
+  {id:'d14',icon:'📚',name:'Repasar apuntes de la semana',cat:'Estudio',xp:30},
+  {id:'d15',icon:'📚',name:'Buscar y leer un artículo técnico interesante',cat:'Estudio',xp:30},
+  // Profesional
+  {id:'d16',icon:'💼',name:'Interactuar con una publicación de tu sector en LinkedIn',cat:'Red',xp:20},
+  {id:'d17',icon:'💼',name:'Escribir algo que aprendiste hoy (Obsidian o notas)',cat:'Red',xp:30},
+  {id:'d18',icon:'💼',name:'Mirar una oferta de trabajo SWE y analizar qué te falta',cat:'Red',xp:25},
+  // Hábitos
+  {id:'d19',icon:'🏃',name:'Hacer ejercicio o salir a caminar',cat:'Hábito',xp:35},
+  {id:'d20',icon:'😴',name:'Dormir antes de las 00:00',cat:'Hábito',xp:30},
+  {id:'d21',icon:'📵',name:'1 hora de estudio sin notificaciones',cat:'Hábito',xp:45},
+  {id:'d22',icon:'💧',name:'Beber 2L de agua',cat:'Hábito',xp:20},
+  // Boss
+  {id:'d23',icon:'💀',name:'Atacar al boss una vez hoy',cat:'Boss',xp:30},
+  {id:'d24',icon:'💀',name:'Avanzar en la quest principal del arc activo',cat:'Boss',xp:50},
+  // Portfolio
+  {id:'d25',icon:'🚀',name:'Añadir una feature pequeña a un proyecto tuyo',cat:'Portfolio',xp:55},
+  {id:'d26',icon:'🚀',name:'Revisar y mejorar el código de un proyecto anterior',cat:'Portfolio',xp:40},
+  {id:'d27',icon:'🚀',name:'Investigar una librería o herramienta nueva',cat:'Portfolio',xp:35},
+  // Redes
+  {id:'d28',icon:'🌐',name:'Repasar conceptos de TCP/IP o DNS',cat:'Redes',xp:30},
+  {id:'d29',icon:'🔧',name:'Explorar Docker: leer documentación 15 min',cat:'DevOps',xp:35},
+  {id:'d30',icon:'🗄️',name:'Escribir y ejecutar una query SQL',cat:'BD',xp:35},
+];
+
+// ─────────────────────────────────────────────
+// ACHIEVEMENTS
+// ─────────────────────────────────────────────
 const ACH_DEF = [
-  // --- YA DESBLOQUEADOS (nivel actual) ---
-  {id:'asir',icon:'🎓',name:'ASIR Completado',cat:'Académico',desc:'Has terminado el ciclo ASIR con una nota media de 8.68. Eso no lo tiene todo el mundo.',xp:500,trigger:{type:'manual'},unlocked:true},
-  {id:'timestamp',icon:'🏢',name:'Primera Nómina Tech',cat:'Profesional',desc:'Trabajando como Junior Consultant en Timestamp Group. Experiencia profesional real en el sector.',xp:400,trigger:{type:'manual'},unlocked:true},
-  {id:'networking',icon:'🌐',name:'Redes en Sangre',cat:'Técnico',desc:'Dominas TCP/IP, DNS, HTTP y seguridad de redes. Base sólida gracias a ASIR.',xp:350,trigger:{type:'stat',key:'Redes',min:5},unlocked:true},
-  {id:'sql_base',icon:'🗄️',name:'SQL Survivor',cat:'Técnico',desc:'Sabes diseñar bases de datos y escribir consultas SQL. No es poca cosa.',xp:300,trigger:{type:'stat',key:'BD',min:4},unlocked:true},
-  {id:'linux',icon:'🐧',name:'Terminal Warrior',cat:'Técnico',desc:'Linux y la terminal no te dan miedo. La mayoría de devs senior tampoco llegaron así de pronto.',xp:250,trigger:{type:'manual'},unlocked:true},
-  {id:'security',icon:'🔒',name:'Security Aware',cat:'Técnico',desc:'Fundamentos de seguridad de redes aplicados. Algo que los SWE de F1 valoran especialmente.',xp:300,trigger:{type:'stat',key:'Seguridad',min:4},unlocked:true},
-  {id:'uoc_enrolled',icon:'📋',name:'Matrícula Confirmada',cat:'Académico',desc:'Inscrita en Ingeniería Informática en la UOC. El quest más largo del juego empieza en septiembre.',xp:200,trigger:{type:'quest',qid:6},unlocked:false},
-
-  // --- CÓDIGO Y PYTHON ---
-  {id:'hello_world',icon:'🐍',name:'Hello, World',cat:'Código',desc:'Tu primer script Python que funciona. El principio de todo lo que viene.',xp:150,trigger:{type:'quest',qid:1},unlocked:false},
-  {id:'python3',icon:'🐍',name:'Pythonista Aprendiz',cat:'Código',desc:'Stat de Python a 3/10. Las listas, funciones y bucles ya son tus amigos.',xp:300,trigger:{type:'stat',key:'Python',min:3},unlocked:false},
-  {id:'python5',icon:'🐍',name:'Pythonista Intermedia',cat:'Código',desc:'Python a 5/10. OOP, ficheros, excepciones. Ya puedes construir cosas reales.',xp:600,trigger:{type:'stat',key:'Python',min:5},unlocked:false},
-  {id:'python8',icon:'🐍',name:'Python Senior',cat:'Código',desc:'Python a 8/10. APIs, testing, async. Nivel para trabajar en cualquier equipo.',xp:1200,trigger:{type:'stat',key:'Python',min:8},unlocked:false},
-
-  // --- GIT Y GITHUB ---
-  {id:'first_commit',icon:'📦',name:'First Commit',cat:'Código',desc:'Tu primera línea de código en GitHub. Desde aquí no hay marcha atrás.',xp:200,trigger:{type:'quest',qid:2},unlocked:false},
-  {id:'git3',icon:'📦',name:'Git Fluida',cat:'Código',desc:'Branches, merges, pull requests. Ya colaboras como una profesional.',xp:400,trigger:{type:'stat',key:'Git',min:3},unlocked:false},
-  {id:'oss',icon:'🌍',name:'Open Source Debut',cat:'Portfolio',desc:'Tu primer PR mergeado en un proyecto open source. Bienvenida a la comunidad.',xp:800,trigger:{type:'quest',qid:8},unlocked:false},
-
-  // --- ALGORITMOS Y LEETCODE ---
-  {id:'leet10',icon:'🧩',name:'LeetCode Rookie',cat:'Algoritmos',desc:'10 problemas resueltos. Ya no te paraliza ver un enunciado técnico.',xp:400,trigger:{type:'quest',qid:3},unlocked:false},
-  {id:'algo3',icon:'🧩',name:'Algoritmos Aprendiz',cat:'Algoritmos',desc:'Stat de Algoritmos a 3/10. Two pointers y sliding window en tu arsenal.',xp:500,trigger:{type:'stat',key:'Algoritmos',min:3},unlocked:false},
-  {id:'algo5',icon:'🧩',name:'Algoritmos Intermedia',cat:'Algoritmos',desc:'Algoritmos a 5/10. Árboles, grafos, recursión. Nivel para pasar entrevistas técnicas.',xp:900,trigger:{type:'stat',key:'Algoritmos',min:5},unlocked:false},
-  {id:'algo7',icon:'🧩',name:'Algoritmos Avanzada',cat:'Algoritmos',desc:'Algoritmos a 7/10. Dynamic programming incluido. Las entrevistas de FAANG ya no dan tanto miedo.',xp:1500,trigger:{type:'stat',key:'Algoritmos',min:7},unlocked:false},
-
-  // --- PORTFOLIO ---
-  {id:'ship_it',icon:'🚀',name:'Ship It',cat:'Portfolio',desc:'Tu primer proyecto completo en producción. Backend, frontend o lo que sea — terminado y desplegado.',xp:1000,trigger:{type:'quest',qid:7},unlocked:false},
-  {id:'portfolio3',icon:'🗂️',name:'Portfolio Real',cat:'Portfolio',desc:'3 proyectos propios en GitHub. Esto es lo que las empresas quieren ver.',xp:1500,trigger:{type:'quests_done',count:3,types:['Portfolio']},unlocked:false},
-  {id:'github_live',icon:'🌐',name:'Deployed',cat:'Portfolio',desc:'Una web tuya, en internet, accesible desde cualquier lugar del mundo.',xp:600,trigger:{type:'manual'},unlocked:true}, // ya la tiene!
-
-  // --- DEVOPS ---
-  {id:'docker1',icon:'🐳',name:'Docker Rookie',cat:'DevOps',desc:'Tu primer contenedor funcionando. El código ya no depende de tu máquina.',xp:600,trigger:{type:'stat',key:'DevOps',min:3},unlocked:false},
-  {id:'devops5',icon:'⚙️',name:'DevOps Intermedia',cat:'DevOps',desc:'CI/CD, Docker y algo de cloud. Nivel para trabajar en infraestructura de F1.',xp:1200,trigger:{type:'stat',key:'DevOps',min:5},unlocked:false},
-
-  // --- EDUCACIÓN ---
-  {id:'cs50',icon:'🏫',name:'CS50 Survivor',cat:'Académico',desc:'CS50x completado. La mejor intro a CS del mundo. Ya piensas como un informático.',xp:500,trigger:{type:'quest',qid:4},unlocked:false},
-  {id:'uoc_asig1',icon:'📚',name:'Primera Asignatura',cat:'Académico',desc:'Primera asignatura de la UOC aprobada. El camino más largo empieza con un paso.',xp:800,trigger:{type:'manual'},unlocked:false},
-  {id:'uoc_year1',icon:'🎓',name:'Primer Año UOC',cat:'Académico',desc:'Primer año de Ingeniería Informática completado. Con trabajo a tiempo completo. Respeto total.',xp:2000,trigger:{type:'manual'},unlocked:false},
-
-  // --- PROFESIONAL ---
-  {id:'linkedin_pro',icon:'💼',name:'LinkedIn Activa',cat:'Profesional',desc:'Perfil actualizado con Timestamp y formación técnica. Tu marca personal empieza aquí.',xp:150,trigger:{type:'quest',qid:5},unlocked:false},
-  {id:'talk_tech',icon:'🎤',name:'Tech Talk',cat:'Profesional',desc:'Has hablado de tecnología en público: meetup, clase, presentación. La visibilidad importa.',xp:500,trigger:{type:'manual'},unlocked:false},
-  {id:'mentored',icon:'🤝',name:'Mentora Encontrada',cat:'Profesional',desc:'Tienes una persona del sector que te guía. Esto acelera todo x3.',xp:400,trigger:{type:'manual'},unlocked:false},
-
-  // --- HITOS GRANDES ---
-  {id:'xp5000',icon:'⚡',name:'5.000 XP',cat:'Hito',desc:'5.000 XP acumulados. Estás construyendo algo real.',xp:500,trigger:{type:'xp',min:5000},unlocked:false},
-  {id:'xp15000',icon:'⚡',name:'15.000 XP',cat:'Hito',desc:'15.000 XP. A este ritmo llegas donde quieres.',xp:1000,trigger:{type:'xp',min:15000},unlocked:false},
-  {id:'all_quests',icon:'✅',name:'Quest Master',cat:'Hito',desc:'Todas las quests iniciales completadas. El juego de verdad acaba de empezar.',xp:1000,trigger:{type:'quests_done',count:8},unlocked:false},
-  {id:'boss_kill',icon:'💀',name:'Boss Slayer',cat:'Hito',desc:'Primer boss derrotado. Demuestra que cuando te propones algo, lo terminas.',xp:1500,trigger:{type:'manual'},unlocked:false},
-  {id:'f1_dream',icon:'🏎️',name:'F1 Final Boss',cat:'Hito',desc:'Software Engineer en un equipo de Fórmula 1. McLaren, Mercedes o Red Bull. El destino final.',xp:99999,trigger:{type:'manual'},unlocked:false},
+  {id:'asir',icon:'🎓',name:'ASIR Completado',cat:'Académico',desc:'Ciclo ASIR terminado con 8.68 de media. Base técnica sólida.',xp:500,trigger:'manual',unlocked:true},
+  {id:'timestamp',icon:'🏢',name:'Primera Nómina Tech',cat:'Profesional',desc:'Junior Consultant en Timestamp Group. Experiencia real desde el primer día.',xp:400,trigger:'manual',unlocked:true},
+  {id:'redes_base',icon:'🌐',name:'Redes en Sangre',cat:'Técnico',desc:'TCP/IP, DNS, HTTP y seguridad de redes. Base sólida por ASIR.',xp:350,trigger:{type:'stat',key:'Redes',min:5},unlocked:true},
+  {id:'sql_base',icon:'🗄️',name:'SQL Survivor',cat:'Técnico',desc:'Diseño de BD y consultas SQL. Fundamentos reales aplicados.',xp:300,trigger:{type:'stat',key:'BD',min:4},unlocked:true},
+  {id:'linux',icon:'🐧',name:'Terminal Warrior',cat:'Técnico',desc:'Linux y la terminal no dan miedo. La mayoría aprende esto años después.',xp:250,trigger:'manual',unlocked:true},
+  {id:'security',icon:'🔒',name:'Security Aware',cat:'Técnico',desc:'Fundamentos de seguridad de redes aplicados. Clave en F1.',xp:300,trigger:{type:'stat',key:'Seguridad',min:4},unlocked:true},
+  {id:'web_deployed',icon:'🌐',name:'Deployed',cat:'Portfolio',desc:'Una web tuya, en internet. Accesible desde cualquier lugar del mundo.',xp:600,trigger:'manual',unlocked:true},
+  // Por desbloquear
+  {id:'first_daily',icon:'📅',name:'Primera Misión',cat:'Daily',desc:'Completaste tu primera daily mission. El hábito empieza con un día.',xp:100,trigger:{type:'daily',count:1},unlocked:false},
+  {id:'daily7',icon:'🔥',name:'Racha de 7 días',cat:'Daily',desc:'7 días consecutivos completando al menos una daily mission.',xp:500,trigger:{type:'streak',min:7},unlocked:false},
+  {id:'daily30',icon:'🔥',name:'Racha de 30 días',cat:'Daily',desc:'30 días de constancia. Eso ya es un hábito de verdad.',xp:1500,trigger:{type:'streak',min:30},unlocked:false},
+  {id:'hello_world',icon:'🐍',name:'Hello, World',cat:'Código',desc:'Tu primer script Python funcionando.',xp:150,trigger:{type:'quest',qid:1},unlocked:false},
+  {id:'python3',icon:'🐍',name:'Pythonista Aprendiz',cat:'Código',desc:'Python a 3/10. Listas, funciones y bucles son tus amigos.',xp:400,trigger:{type:'stat',key:'Python',min:3},unlocked:false},
+  {id:'python5',icon:'🐍',name:'Pythonista Intermedia',cat:'Código',desc:'Python a 5/10. OOP y ficheros. Ya puedes construir cosas reales.',xp:700,trigger:{type:'stat',key:'Python',min:5},unlocked:false},
+  {id:'python8',icon:'🐍',name:'Python Senior',cat:'Código',desc:'Python a 8/10. APIs, testing, async. Nivel para cualquier equipo.',xp:1500,trigger:{type:'stat',key:'Python',min:8},unlocked:false},
+  {id:'first_commit',icon:'📦',name:'First Commit',cat:'Código',desc:'Tu primera línea de código en GitHub.',xp:200,trigger:{type:'quest',qid:2},unlocked:false},
+  {id:'git3',icon:'📦',name:'Git Fluida',cat:'Código',desc:'Branches, merges, PRs. Ya colaboras como una profesional.',xp:400,trigger:{type:'stat',key:'Git',min:3},unlocked:false},
+  {id:'leet10',icon:'🧩',name:'LeetCode Rookie',cat:'Algoritmos',desc:'10 problemas resueltos. Ya no te paraliza un enunciado técnico.',xp:400,trigger:{type:'quest',qid:3},unlocked:false},
+  {id:'algo5',icon:'🧩',name:'Algoritmos Intermedia',cat:'Algoritmos',desc:'Algoritmos a 5/10. Árboles, grafos, recursión. Lista para entrevistas.',xp:900,trigger:{type:'stat',key:'Algoritmos',min:5},unlocked:false},
+  {id:'algo7',icon:'🧩',name:'Algoritmos Avanzada',cat:'Algoritmos',desc:'Algoritmos a 7/10. DP incluido. Entrevistas FAANG ya no dan miedo.',xp:1500,trigger:{type:'stat',key:'Algoritmos',min:7},unlocked:false},
+  {id:'ship_it',icon:'🚀',name:'Ship It',cat:'Portfolio',desc:'Primer proyecto completo en producción.',xp:1000,trigger:{type:'quest',qid:7},unlocked:false},
+  {id:'oss',icon:'🌍',name:'Open Source Debut',cat:'Portfolio',desc:'PR mergeado en un proyecto open source.',xp:800,trigger:{type:'quest',qid:8},unlocked:false},
+  {id:'docker1',icon:'🐳',name:'Docker Rookie',cat:'DevOps',desc:'Primer contenedor funcionando.',xp:600,trigger:{type:'stat',key:'DevOps',min:3},unlocked:false},
+  {id:'devops5',icon:'⚙️',name:'DevOps Intermedia',cat:'DevOps',desc:'CI/CD, Docker y cloud. Nivel infraestructura F1.',xp:1200,trigger:{type:'stat',key:'DevOps',min:5},unlocked:false},
+  {id:'cs50',icon:'🏫',name:'CS50 Survivor',cat:'Académico',desc:'CS50x completado. La mejor intro a CS del mundo.',xp:500,trigger:{type:'quest',qid:4},unlocked:false},
+  {id:'uoc_enrolled',icon:'📋',name:'Matrícula Confirmada',cat:'Académico',desc:'Inscrita en Ingeniería Informática en la UOC.',xp:200,trigger:{type:'quest',qid:6},unlocked:false},
+  {id:'uoc_asig1',icon:'📚',name:'Primera Asignatura',cat:'Académico',desc:'Primera asignatura de la UOC aprobada con trabajo a tiempo completo.',xp:800,trigger:'manual',unlocked:false},
+  {id:'uoc_year1',icon:'🎓',name:'Primer Año UOC',cat:'Académico',desc:'Primer año de Ingeniería Informática completado. Respeto total.',xp:2000,trigger:'manual',unlocked:false},
+  {id:'linkedin_pro',icon:'💼',name:'LinkedIn Activa',cat:'Profesional',desc:'Perfil actualizado con Timestamp y skills técnicas.',xp:150,trigger:{type:'quest',qid:5},unlocked:false},
+  {id:'xp5000',icon:'⚡',name:'5.000 XP',cat:'Hito',desc:'5.000 XP acumulados. Estás construyendo algo real.',xp:300,trigger:{type:'xp',min:5000},unlocked:false},
+  {id:'xp15000',icon:'⚡',name:'15.000 XP',cat:'Hito',desc:'15.000 XP. A este ritmo llegas donde quieres.',xp:800,trigger:{type:'xp',min:15000},unlocked:false},
+  {id:'boss_kill',icon:'💀',name:'Boss Slayer',cat:'Hito',desc:'Primer boss derrotado.',xp:1500,trigger:'manual',unlocked:false},
+  {id:'f1_dream',icon:'🏎️',name:'F1 Final Boss',cat:'Hito',desc:'Software Engineer en un equipo de F1.',xp:99999,trigger:'manual',unlocked:false},
 ];
 
-// ── SHOP DEFINITION ───────────────────────────────────────
+// ─────────────────────────────────────────────
+// SHOP
+// ─────────────────────────────────────────────
 const SHOP_DEF = [
-  // Pequeñas
-  {id:'coffee',e:'☕',n:'Café especial',cat:'Pequeño placer',p:30,desc:'Un café de esos ricos, no el de cápsula'},
-  {id:'sushi',e:'🍣',n:'Sushi para cenar',cat:'Pequeño placer',p:60,desc:'Una noche de sushi contigo misma'},
-  {id:'pizza',e:'🍕',n:'Pizza con amigas',cat:'Pequeño placer',p:80,desc:'Una noche sin culpa. Te lo mereces'},
-  {id:'book_tech',e:'📚',n:'Libro técnico',cat:'Inversión',p:100,desc:'Clean Code, DDIA, The Pragmatic Programmer — tú eliges'},
-  {id:'book_novel',e:'📖',n:'Novela nueva',cat:'Pequeño placer',p:60,desc:'Leer algo que no sea código también cuenta'},
-  {id:'skincare',e:'🧴',n:'Producto de skincare',cat:'Autocuidado',p:80,desc:'Cuidarte es parte del juego'},
-  // Medianas
-  {id:'game',e:'🎮',n:'Videojuego nuevo',cat:'Recompensa',p:200,desc:'Un juego que llevas queriendo. Te lo ganaste'},
-  {id:'clothes',e:'👗',n:'Ropa nueva',cat:'Recompensa',p:200,desc:'Una prenda que te haga sentir bien'},
-  {id:'shoes',e:'👟',n:'Zapatillas nuevas',cat:'Recompensa',p:250,desc:'Las que tienes en el carrito desde hace meses'},
-  {id:'dinner',e:'🍽️',n:'Cena especial',cat:'Recompensa',p:150,desc:'Ese restaurante al que no vas porque es caro'},
-  {id:'spa',e:'💆',n:'Día de spa',cat:'Autocuidado',p:180,desc:'Masaje, sauna, o lo que sea que te recargue'},
-  {id:'course',e:'🎓',n:'Curso online',cat:'Inversión',p:300,desc:'Udemy, Coursera, Frontend Masters — lo que necesites'},
-  // Grandes
-  {id:'weekend',e:'✈️',n:'Escapada de fin de semana',cat:'Experiencia',p:800,desc:'Dos días fuera. No hace falta que sea lejos'},
-  {id:'concert',e:'🎤',n:'Concierto o festival',cat:'Experiencia',p:400,desc:'Esa artista que viene pronto. Ve.'},
-  {id:'tablet',e:'📱',n:'Gadget tech',cat:'Inversión',p:600,desc:'Teclado, ratón, auriculares, lo que te falte para trabajar bien'},
-  {id:'monitor',e:'🖥️',n:'Monitor nuevo',cat:'Inversión',p:800,desc:'Un monitor decente te cambia la vida cuando estudias'},
-  {id:'keyboard',e:'⌨️',n:'Teclado mecánico',cat:'Inversión',p:500,desc:'El clic-clic de las personas serias'},
-  // Sueños grandes
-  {id:'f1_merch',e:'🧢',n:'Merch oficial de F1',cat:'F1 Dream',p:300,desc:'Gorra o camiseta del equipo que te gusta. McLaren papaya hit different'},
-  {id:'f1_race',e:'🏎️',n:'Ver una carrera de F1',cat:'F1 Dream',p:1500,desc:'Un GP en directo. Paddock no hace falta (por ahora)'},
-  {id:'f1_paddock',e:'🏁',n:'Experiencia Paddock Club',cat:'F1 Dream',p:5000,desc:'El siguiente nivel. Cuando seas SWE en F1 esto lo pagas tú misma'},
+  {id:'coffee',e:'☕',n:'Café especial',cat:'Placer',p:30},{id:'sushi',e:'🍣',n:'Sushi para cenar',cat:'Placer',p:60},
+  {id:'pizza',e:'🍕',n:'Pizza con amigas',cat:'Placer',p:80},{id:'book_novel',e:'📖',n:'Novela nueva',cat:'Placer',p:60},
+  {id:'skincare',e:'🧴',n:'Producto skincare',cat:'Autocuidado',p:80},{id:'spa',e:'💆',n:'Día de spa',cat:'Autocuidado',p:180},
+  {id:'book_tech',e:'📚',n:'Libro técnico',cat:'Inversión',p:100},{id:'course',e:'🎓',n:'Curso online',cat:'Inversión',p:300},
+  {id:'keyboard',e:'⌨️',n:'Teclado mecánico',cat:'Inversión',p:500},{id:'monitor',e:'🖥️',n:'Monitor nuevo',cat:'Inversión',p:800},
+  {id:'game',e:'🎮',n:'Videojuego nuevo',cat:'Recompensa',p:200},{id:'clothes',e:'👗',n:'Ropa nueva',cat:'Recompensa',p:200},
+  {id:'shoes',e:'👟',n:'Zapatillas nuevas',cat:'Recompensa',p:250},{id:'dinner',e:'🍽️',n:'Cena especial',cat:'Recompensa',p:150},
+  {id:'concert',e:'🎤',n:'Concierto o festival',cat:'Experiencia',p:400},{id:'weekend',e:'✈️',n:'Escapada fin de semana',cat:'Experiencia',p:800},
+  {id:'f1_merch',e:'🧢',n:'Merch oficial F1',cat:'F1 Dream',p:300},{id:'f1_race',e:'🏎️',n:'Ver una carrera de F1',cat:'F1 Dream',p:1500},
+  {id:'f1_paddock',e:'🏁',n:'Paddock Club F1',cat:'F1 Dream',p:5000},
 ];
 
-// ── STATE ─────────────────────────────────────────────────
-const DEFAULTS={
-  xp:1850, coins:1850,
-  bossHp:100, hp:7, mood:7, focus:6, motiv:8,
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+const DEFAULTS = {
+  xp:1850, coins:1850, bossHp:100,
+  hp:7, mood:7, focus:6, motiv:8,
+  streak:0, lastStreakDate:'',
   radarStats:{Python:1,Redes:5,BD:4,Seguridad:4,Algoritmos:1,DevOps:1,Git:0},
+  dailyDate:'', dailyMissions:[], dailyCompleted:[],
+  totalDailyXP:0, dailyCompletedToday:0,
   quests:[
     {id:1,name:'Instalar Python y hacer un proyecto pequeño',type:'Código',xp:300,diff:'⭐⭐ Media',done:false},
     {id:2,name:'Abrir GitHub y subir tu primer repositorio',type:'Código',xp:200,diff:'⭐ Fácil',done:false},
     {id:3,name:'Completar 10 problemas Easy de LeetCode',type:'Algoritmos',xp:400,diff:'⭐⭐ Media',done:false},
     {id:4,name:'Completar CS50x Semanas 1-4',type:'Aprendizaje',xp:500,diff:'⭐⭐ Media',done:false},
-    {id:5,name:'Actualizar LinkedIn con rol en Timestamp y skills técnicas',type:'Trabajo',xp:150,diff:'⭐ Fácil',done:false},
-    {id:6,name:'Confirmar matrícula UOC y revisar convalidaciones',type:'UOC',xp:200,diff:'⭐ Fácil',done:false},
-    {id:7,name:'Primer proyecto de portfolio desplegado (backend + frontend)',type:'Portfolio',xp:1200,diff:'⭐⭐⭐ Difícil',done:false},
+    {id:5,name:'Actualizar LinkedIn con Timestamp y skills técnicas',type:'Trabajo',xp:150,diff:'⭐ Fácil',done:false},
+    {id:6,name:'Confirmar matrícula UOC y convalidaciones',type:'UOC',xp:200,diff:'⭐ Fácil',done:false},
+    {id:7,name:'Primer proyecto de portfolio desplegado',type:'Portfolio',xp:1200,diff:'⭐⭐⭐ Difícil',done:false},
     {id:8,name:'Contribuir a un proyecto open source (PR mergeado)',type:'Portfolio',xp:1000,diff:'⭐⭐⭐ Difícil',done:false},
-    {id:9,name:'Completar 50 problemas de LeetCode',type:'Algoritmos',xp:800,diff:'⭐⭐⭐ Difícil',done:false},
+    {id:9,name:'Completar 50 problemas LeetCode',type:'Algoritmos',xp:800,diff:'⭐⭐⭐ Difícil',done:false},
     {id:10,name:'Construir una API REST funcional con Python',type:'Código',xp:600,diff:'⭐⭐ Media',done:false},
     {id:11,name:'Dockerizar un proyecto propio',type:'DevOps',xp:500,diff:'⭐⭐ Media',done:false},
     {id:12,name:'Leer Clean Code completo',type:'Aprendizaje',xp:300,diff:'⭐⭐ Media',done:false},
-    {id:13,name:'Conectar con 5 SWEs en LinkedIn y mantener conversación',type:'Trabajo',xp:250,diff:'⭐ Fácil',done:false},
-    {id:14,name:'Hacer una presentación técnica en el trabajo',type:'Trabajo',xp:400,diff:'⭐⭐ Media',done:false},
-    {id:15,name:'Aprobar primera asignatura de la UOC',type:'UOC',xp:1000,diff:'⭐⭐⭐ Difícil',done:false},
+    {id:13,name:'Aprobar primera asignatura UOC',type:'UOC',xp:1000,diff:'⭐⭐⭐ Difícil',done:false},
   ],
   arcItems:[
     {text:'Python instalado y primer script funcionando',done:false},
     {text:'GitHub con al menos 1 repositorio propio',done:false},
     {text:'10 LeetCode Easy resueltos',done:false},
     {text:'CS50x semanas 1-4 completadas',done:false},
-    {text:'LinkedIn actualizado con Timestamp y skills',done:false},
-    {text:'Matrícula UOC confirmada con convalidaciones',done:false},
+    {text:'LinkedIn actualizado',done:false},
+    {text:'Matrícula UOC confirmada',done:false},
     {text:'Primer proyecto desplegado online',done:true},
   ],
   purchased:{},
-  nextQuestId:16,
+  achievements: ACH_DEF.map(a=>({id:a.id,unlocked:a.unlocked||false})),
+  nextQuestId:14,
 };
 
-// Load achievements into defaults
-DEFAULTS.achievements = ACH_DEF.map(a=>({id:a.id,unlocked:a.unlocked||false}));
-
 let S;
-try{
-  const sv=localStorage.getItem('yunaexe_v4');
-  S=sv?JSON.parse(sv):JSON.parse(JSON.stringify(DEFAULTS));
-}catch(e){S=JSON.parse(JSON.stringify(DEFAULTS));}
-if(!S.radarStats)S.radarStats=JSON.parse(JSON.stringify(DEFAULTS.radarStats));
-if(!S.radarStats.Git)S.radarStats.Git=0;
+try{const sv=localStorage.getItem('yunaexe_v5');S=sv?JSON.parse(sv):JSON.parse(JSON.stringify(DEFAULTS));}
+catch(e){S=JSON.parse(JSON.stringify(DEFAULTS));}
+// migrations
+if(!S.radarStats.Git&&S.radarStats.Git!==0)S.radarStats.Git=0;
 if(!S.purchased)S.purchased={};
-if(!S.achievements)S.achievements=DEFAULTS.achievements;
+if(!S.achievements||S.achievements.length!==ACH_DEF.length)S.achievements=DEFAULTS.achievements;
+if(!S.streak)S.streak=0;
+if(!S.dailyMissions)S.dailyMissions=[];
 
-function save(){try{localStorage.setItem('yunaexe_v4',JSON.stringify(S));}catch(e){}}
+function save(){try{localStorage.setItem('yunaexe_v5',JSON.stringify(S));}catch(e){}}
 
-// ── NOTIFY ────────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// DAILY MISSIONS ENGINE
+// ─────────────────────────────────────────────
+function todayStr(){
+  const d=new Date();
+  return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+}
+
+function generateDaily(){
+  // Pick 5 random missions from pool, weighted toward current focus areas
+  const pool=[...DAILY_POOL];
+  // shuffle
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
+  }
+  return pool.slice(0,5).map(m=>m.id);
+}
+
+function checkAndRefreshDaily(){
+  const today=todayStr();
+  if(S.dailyDate!==today){
+    // New day — check streak
+    if(S.dailyDate){
+      const prev=new Date(S.dailyDate);
+      const now=new Date(today);
+      const diff=(now-prev)/86400000;
+      if(diff===1&&S.dailyCompletedToday>0){
+        S.streak=(S.streak||0)+1;
+      } else if(diff>1){
+        S.streak=0;
+      }
+    }
+    S.dailyDate=today;
+    S.dailyMissions=generateDaily();
+    S.dailyCompleted=[];
+    S.dailyCompletedToday=0;
+    save();
+  }
+}
+
+function renderDaily(){
+  checkAndRefreshDaily();
+  const today=new Date();
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  document.getElementById('dailyDate').textContent=days[today.getDay()]+', '+today.getDate()+' '+months[today.getMonth()];
+  document.getElementById('streakBadge').textContent='🔥 Racha: '+(S.streak||0)+' días';
+
+  const missions=S.dailyMissions.map(id=>DAILY_POOL.find(m=>m.id===id)).filter(Boolean);
+  const done=S.dailyCompleted||[];
+  const totalXP=missions.reduce((a,m)=>a+m.xp,0);
+  const earnedXP=missions.filter(m=>done.includes(m.id)).reduce((a,m)=>a+m.xp,0);
+  const pct=totalXP>0?(earnedXP/totalXP)*100:0;
+
+  document.getElementById('dmCount').textContent=done.length+'/'+missions.length;
+  document.getElementById('dailyXPText').textContent=earnedXP+' / '+totalXP;
+  document.getElementById('dailyXPBar').style.width=pct+'%';
+
+  document.getElementById('dailyMissions').innerHTML=missions.map(m=>{
+    const isDone=done.includes(m.id);
+    return`<div class="dm ${isDone?'done':''}" onclick="toggleDaily('${m.id}')">
+      <div class="dm-icon">${m.icon}</div>
+      <div class="dm-info">
+        <div class="dm-name">${m.name}</div>
+        <div class="dm-meta"><span class="tag t-blue">${m.cat}</span></div>
+      </div>
+      <div class="dm-check">${isDone?'✓':''}</div>
+      <div class="dm-xp">+${m.xp}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDaily(id){
+  if(!S.dailyCompleted)S.dailyCompleted=[];
+  const idx=S.dailyCompleted.indexOf(id);
+  const mission=DAILY_POOL.find(m=>m.id===id);
+  if(idx===-1){
+    S.dailyCompleted.push(id);
+    S.xp+=mission.xp;S.coins+=mission.xp;
+    S.dailyCompletedToday=(S.dailyCompletedToday||0)+1;
+    notify('✅ '+mission.name+'\n+'+mission.xp+' XP!');
+    updateXP();checkAchievements({daily:true});
+  } else {
+    S.dailyCompleted.splice(idx,1);
+    S.xp=Math.max(0,S.xp-mission.xp);
+    S.coins=Math.max(0,S.coins-mission.xp);
+    S.dailyCompletedToday=Math.max(0,(S.dailyCompletedToday||1)-1);
+    updateXP();
+  }
+  renderDaily();save();
+}
+
+function rerollDaily(){
+  S.dailyMissions=generateDaily();
+  S.dailyCompleted=[];
+  S.dailyCompletedToday=0;
+  notify('🎲 ¡Nuevas misiones generadas!','var(--purple)');
+  renderDaily();save();
+}
+
+// ─────────────────────────────────────────────
+// ACHIEVEMENT ENGINE
+// ─────────────────────────────────────────────
+function checkAchievements(ctx){
+  let any=false;
+  ACH_DEF.forEach(def=>{
+    const st=S.achievements.find(a=>a.id===def.id);
+    if(!st||st.unlocked)return;
+    let ok=false;
+    const t=def.trigger;
+    if(t==='manual')return;
+    if(t.type==='quest'&&ctx.questId===t.qid)ok=true;
+    if(t.type==='stat'&&ctx.statKey===t.key&&S.radarStats[t.key]>=t.min)ok=true;
+    if(t.type==='xp'&&S.xp>=t.min)ok=true;
+    if(t.type==='streak'&&(S.streak||0)>=t.min)ok=true;
+    if(t.type==='daily'&&(S.dailyCompletedToday||0)>=t.count)ok=true;
+    if(ok){
+      st.unlocked=true;S.xp+=def.xp;S.coins+=def.xp;any=true;
+      setTimeout(()=>notify('🏆 Logro desbloqueado:\n'+def.name+'\n+'+def.xp+' XP!','var(--gold)'),500);
+    }
+  });
+  if(any){save();updateXP();renderAchievements();}
+}
+
+// ─────────────────────────────────────────────
+// CORE HELPERS
+// ─────────────────────────────────────────────
 let notifTimer;
 function notify(msg,color){
   const n=document.getElementById('notif');
@@ -483,46 +660,13 @@ function notify(msg,color){
   n.classList.add('show');clearTimeout(notifTimer);
   notifTimer=setTimeout(()=>n.classList.remove('show'),3000);
 }
-
-// ── NAV ───────────────────────────────────────────────────
 function go(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  btn.classList.add('active');
+  document.getElementById('page-'+id).classList.add('active');btn.classList.add('active');
 }
+function tc(t){return{Código:'t-green',Aprendizaje:'t-purple',Trabajo:'t-orange',UOC:'t-blue',Portfolio:'t-red',Hábito:'t-teal',Algoritmos:'t-gold',DevOps:'t-teal',Git:'t-orange',Estudio:'t-purple',Red:'t-blue',BD:'t-teal',Redes:'t-purple',Boss:'t-red',Daily:'t-green',Hito:'t-gold'}[t]||'t-blue';}
 
-// ── ACHIEVEMENT ENGINE ───────────────────────────────────
-function checkAchievements(context){
-  let newUnlock=false;
-  ACH_DEF.forEach((def,i)=>{
-    const state=S.achievements.find(a=>a.id===def.id);
-    if(!state||state.unlocked)return;
-    let should=false;
-    const t=def.trigger;
-    if(t.type==='quest'&&context.questId===t.qid)should=true;
-    if(t.type==='stat'&&context.statKey===t.key&&S.radarStats[t.key]>=t.min)should=true;
-    if(t.type==='xp'&&S.xp>=t.min)should=true;
-    if(t.type==='quests_done'){
-      const done=S.quests.filter(q=>q.done&&(!t.types||t.types.includes(q.type))).length;
-      if(done>=t.count)should=true;
-    }
-    if(should){
-      state.unlocked=true;
-      S.xp+=def.xp;S.coins+=def.xp;
-      newUnlock=true;
-      setTimeout(()=>notify('🏆 Logro desbloqueado: '+def.name+'\n+'+def.xp+' XP!','var(--gold)'),400);
-    }
-  });
-  if(newUnlock){save();updateXP();renderAchievements();}
-}
-
-// ── TAG COLOR ─────────────────────────────────────────────
-function tc(type){
-  return{Código:'t-green',Aprendizaje:'t-purple',Trabajo:'t-orange',UOC:'t-blue',Portfolio:'t-red',Hábito:'t-teal',Algoritmos:'t-gold',DevOps:'t-teal'}[type]||'t-blue';
-}
-
-// ── XP ────────────────────────────────────────────────────
 function updateXP(){
   const lvl=Math.floor(S.xp/2000)+1;const pct=(S.xp%2000)/20;
   document.getElementById('xpBar').style.width=pct+'%';
@@ -531,71 +675,54 @@ function updateXP(){
   const cd='🟡 '+S.coins+' monedas';
   document.getElementById('coinsDisp').textContent=cd;
   document.getElementById('shopCoins').textContent=cd;
-  const unlocked=S.achievements.filter(a=>a.unlocked).length;
-  document.getElementById('achCount').textContent='🏆 '+unlocked+' logros desbloqueados';
+  const ul=S.achievements.filter(a=>a.unlocked).length;
+  document.getElementById('achCount').textContent='🏆 '+ul+' logros';
   save();
 }
-
-// ── ENERGY ────────────────────────────────────────────────
 function renderEnergy(){
   [['hp','hpB','hpV'],['mood','moodB','moodV'],['focus','focB','focV'],['motiv','motB','motV']].forEach(([k,b,v])=>{
     const val=Math.max(0,Math.min(10,S[k]));
-    document.getElementById(b).style.width=(val*10)+'%';
-    document.getElementById(v).textContent=val+'/10';
+    document.getElementById(b).style.width=(val*10)+'%';document.getElementById(v).textContent=val+'/10';
   });
 }
 
-// ── QUESTS ────────────────────────────────────────────────
-let questFilter='all';
-function qHTML(q,i,showDel){
-  return`<div class="qi ${q.done?'done':''}" onclick="toggleQ(${i})">
-    <div class="qcheck">${q.done?'✓':''}</div>
-    <div class="qinfo">
-      <div class="qname">${q.name}</div>
-      <div class="qmeta"><span class="tag ${tc(q.type)}">${q.type}</span><span class="tag t-blue">${q.diff}</span></div>
-    </div>
-    <div class="qxp">+${q.xp}</div>
-    ${showDel?`<button class="qdel" onclick="delQ(event,${i})">✕</button>`:''}
-  </div>`;
-}
+// QUESTS
+let qFilter='all';
 function renderQuests(){
-  const done=S.quests.filter(q=>q.done).length;
-  document.getElementById('qCount').textContent=done+'/'+S.quests.length;
-  document.getElementById('availXP').textContent='XP disponible: '+S.quests.filter(q=>!q.done).reduce((a,q)=>a+q.xp,0);
-  document.getElementById('hqQuests').innerHTML=S.quests.slice(0,8).map((q,i)=>qHTML(q,i,false)).join('');
+  document.getElementById('availXP').textContent='XP pendiente: '+S.quests.filter(q=>!q.done).reduce((a,q)=>a+q.xp,0);
   const types=['all',...new Set(S.quests.map(q=>q.type))];
-  document.getElementById('questFilters').innerHTML=types.map(t=>`<button class="filter-btn ${questFilter===t?'active':''}" onclick="setQFilter('${t}')">${t==='all'?'Todas':t}</button>`).join('');
-  const filtered=questFilter==='all'?S.quests:S.quests.filter(q=>q.type===questFilter);
-  document.getElementById('allQuests').innerHTML=filtered.map((q,i)=>qHTML(q,S.quests.indexOf(q),true)).join('');
+  document.getElementById('questFilters').innerHTML=types.map(t=>`<button class="filter-btn ${qFilter===t?'active':''}" onclick="setQF('${t}')">${t==='all'?'Todas':t}</button>`).join('');
+  const list=qFilter==='all'?S.quests:S.quests.filter(q=>q.type===qFilter);
+  document.getElementById('allQuests').innerHTML=list.map((q,_)=>{
+    const i=S.quests.indexOf(q);
+    return`<div class="qi ${q.done?'done':''}" onclick="toggleQ(${i})">
+      <div class="qcheck">${q.done?'✓':''}</div>
+      <div class="qinfo"><div class="qname">${q.name}</div>
+      <div class="qmeta"><span class="tag ${tc(q.type)}">${q.type}</span><span class="tag t-blue">${q.diff}</span></div></div>
+      <div class="qxp">+${q.xp}</div>
+      <button class="qdel" onclick="delQ(event,${i})">✕</button>
+    </div>`;
+  }).join('');
 }
-function setQFilter(f){questFilter=f;renderQuests();}
+function setQF(f){qFilter=f;renderQuests();}
 function toggleQ(i){
   const q=S.quests[i];
-  if(!q.done){
-    q.done=true;S.xp+=q.xp;S.coins+=q.xp;S.motiv=Math.min(10,S.motiv+1);
-    notify('✅ Quest completada!\n+'+q.xp+' XP · +'+q.xp+' 🟡');
-    updateXP();renderEnergy();updateShopBtns();
-    checkAchievements({questId:q.id});
-    checkAchievements({});
-  }
+  if(!q.done){q.done=true;S.xp+=q.xp;S.coins+=q.xp;S.motiv=Math.min(10,S.motiv+1);
+    notify('✅ Quest completada!\n+'+q.xp+' XP');updateXP();renderEnergy();
+    checkAchievements({questId:q.id});checkAchievements({});}
   renderQuests();save();
 }
-function delQ(e,i){e.stopPropagation();if(confirm('¿Eliminar esta quest?')){S.quests.splice(i,1);renderQuests();save();}}
-function closeModal(){document.getElementById('questModal').style.display='none';}
+function delQ(e,i){e.stopPropagation();if(confirm('¿Eliminar?')){S.quests.splice(i,1);renderQuests();save();}}
+function closeModal(id){document.getElementById(id).style.display='none';}
 function addQuest(){
   const name=document.getElementById('qName').value.trim();
   if(!name){notify('Escribe un nombre','var(--red)');return;}
-  S.quests.push({id:S.nextQuestId++,name,type:document.getElementById('qType').value,xp:parseInt(document.getElementById('qXP').value)||200,diff:document.getElementById('qDiff').value,done:false});
-  closeModal();document.getElementById('qName').value='';renderQuests();save();notify('⚔️ Nueva quest añadida!');
+  S.quests.push({id:S.nextQuestId++,name,type:document.getElementById('qType').value,xp:parseInt(document.getElementById('qXP').value)||400,diff:document.getElementById('qDiff').value,done:false});
+  closeModal('questModal');document.getElementById('qName').value='';renderQuests();save();notify('⚔️ Quest añadida!');
 }
 
-// ── BOSS ──────────────────────────────────────────────────
-const attacks=[
-  {e:'🐍',n:'Ejercicio de Python',d:6},{e:'📦',n:'Subir algo a GitHub',d:6},
-  {e:'🧩',n:'Resolver LeetCode Easy',d:10},{e:'📚',n:'Estudiar 2h seguidas',d:12},
-  {e:'🎓',n:'Repasar plan UOC',d:5},{e:'💻',n:'Sesión de código 1h',d:8},
-  {e:'📖',n:'Leer libro técnico',d:4},
-];
+// BOSS
+const attacks=[{e:'🐍',n:'Ejercicio Python',d:6},{e:'📦',n:'Commit a GitHub',d:6},{e:'🧩',n:'LeetCode Easy',d:10},{e:'📚',n:'Estudiar 2h',d:12},{e:'💻',n:'Sesión código 1h',d:8},{e:'📖',n:'Leer libro técnico',d:4}];
 function renderBoss(){
   document.getElementById('bossHpBar').style.width=S.bossHp+'%';
   document.getElementById('bossHpTxt').textContent=S.bossHp+'/100';
@@ -606,47 +733,41 @@ function renderBoss(){
   document.getElementById('atkList').innerHTML=attacks.map(a=>`<button class="atk-btn" onclick="attack(${a.d},'${a.n}')"><span>${a.e}</span><span>${a.n}</span><span class="atk-dmg">-${a.d} HP</span></button>`).join('');
 }
 function attack(dmg,name){
-  if(S.bossHp<=0){notify('¡Boss ya derrotado! 🏆','var(--gold)');return;}
+  if(S.bossHp<=0){notify('¡Boss derrotado! 🏆','var(--gold)');return;}
   S.bossHp=Math.max(0,S.bossHp-dmg);S.xp+=dmg*3;S.coins+=dmg*2;
-  if(S.bossHp<=0){S.xp+=1000;S.coins+=500;notify('🏆 ¡BOSS DERROTADO!\n+1000 XP bonus!','var(--gold)');checkAchievements({manual:'boss_kill'});}
-  else notify('⚔️ '+name+'\n-'+dmg+' HP al boss!');
+  if(S.bossHp<=0){S.xp+=1000;S.coins+=500;notify('🏆 ¡BOSS DERROTADO!\n+1000 XP!','var(--gold)');}
+  else notify('⚔️ '+name+' → -'+dmg+' HP!');
   renderBoss();updateXP();save();
 }
 
-// ── SHOP ──────────────────────────────────────────────────
-let shopFilter='all';
+// SHOP
+let shopF='all';
 const shopCats=['all',...new Set(SHOP_DEF.map(i=>i.cat))];
 function renderShop(){
-  document.getElementById('shopFilters').innerHTML=shopCats.map(c=>`<button class="filter-btn ${shopFilter===c?'active':''}" onclick="setShopFilter('${c}')">${c==='all'?'Todas':c}</button>`).join('');
-  const filtered=shopFilter==='all'?SHOP_DEF:SHOP_DEF.filter(i=>i.cat===shopFilter);
-  document.getElementById('shopGrid').innerHTML=filtered.map(item=>`
+  document.getElementById('shopFilters').innerHTML=shopCats.map(c=>`<button class="filter-btn ${shopF===c?'active':''}" onclick="setShopF('${c}')">${c==='all'?'Todas':c}</button>`).join('');
+  const list=shopF==='all'?SHOP_DEF:SHOP_DEF.filter(i=>i.cat===shopF);
+  document.getElementById('shopGrid').innerHTML=list.map(item=>`
     <div class="shop-item ${S.purchased[item.id]?'purchased':''}">
-      <div class="shop-emoji">${item.e}</div>
-      <div class="shop-name">${item.n}</div>
-      <div class="shop-cat">${item.cat}</div>
-      <div class="shop-price">🟡 ${item.p}</div>
-      <button class="shop-btn" id="sbtn-${item.id}" onclick="buyItem('${item.id}')" ${S.purchased[item.id]?'disabled':S.coins<item.p?'disabled':''}>
+      <div class="shop-emoji">${item.e}</div><div class="shop-name">${item.n}</div>
+      <div class="shop-cat">${item.cat}</div><div class="shop-price">🟡 ${item.p}</div>
+      <button class="shop-btn" onclick="buyItem('${item.id}')" ${S.purchased[item.id]?'disabled':S.coins<item.p?'disabled':''}>
         ${S.purchased[item.id]?'✅ Comprado':S.coins>=item.p?'Comprar':'Sin monedas'}
       </button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-function setShopFilter(f){shopFilter=f;renderShop();}
-function updateShopBtns(){renderShop();}
+function setShopF(f){shopF=f;renderShop();}
 function buyItem(id){
   const item=SHOP_DEF.find(i=>i.id===id);
   if(!item||S.purchased[id]||S.coins<item.p)return;
   S.purchased[id]=true;S.coins-=item.p;S.motiv=Math.min(10,S.motiv+2);
-  notify('🛒 Comprado: '+item.n+'\n-'+item.p+' 🟡','var(--gold)');
-  updateXP();renderShop();renderEnergy();save();
+  notify('🛒 '+item.n+' -'+item.p+' 🟡','var(--gold)');updateXP();renderShop();renderEnergy();save();
 }
 
-// ── ARCS ──────────────────────────────────────────────────
+// ARCS
 function renderArcs(){
   const done=S.arcItems.filter(a=>a.done).length;
   const pct=Math.round((done/S.arcItems.length)*100);
-  document.getElementById('arcPct').textContent=pct+'%';
-  document.getElementById('arcBar').style.width=pct+'%';
+  document.getElementById('arcPct').textContent=pct+'%';document.getElementById('arcBar').style.width=pct+'%';
   document.getElementById('arcList').innerHTML=S.arcItems.map((item,i)=>`
     <div class="qi ${item.done?'done':''}" onclick="toggleArc(${i})" style="margin-bottom:5px;">
       <div class="qcheck">${item.done?'✓':''}</div>
@@ -655,18 +776,18 @@ function renderArcs(){
 }
 function toggleArc(i){S.arcItems[i].done=!S.arcItems[i].done;renderArcs();save();}
 
-// ── ENERGY MENU ───────────────────────────────────────────
+// ENERGY MENU
 const EA={
-  hp:[{e:'🍎',n:'Comer bien',v:1,s:'hp',p:true},{e:'😴',n:'Dormir 7-8h',v:4,s:'hp',p:true},{e:'💧',n:'Hidratarme',v:1,s:'hp',p:true},{e:'🏃',n:'Hacer ejercicio',v:2,s:'hp',p:true},{e:'🚶',n:'Salir a caminar',v:1,s:'hp',p:true},{e:'📱',n:'Doomscroll >1h',v:-2,s:'hp',p:false},{e:'😴',n:'Dormir <6h',v:-3,s:'hp',p:false},{e:'🍕',n:'Comer fatal todo el día',v:-1,s:'hp',p:false}],
-  mood:[{e:'🎵',n:'Escuchar música',v:1,s:'mood',p:true},{e:'👥',n:'Quedar con amigas',v:2,s:'mood',p:true},{e:'🎮',n:'Videojuego un rato',v:1,s:'mood',p:true},{e:'📓',n:'Journaling',v:1,s:'mood',p:true},{e:'🌿',n:'Tiempo en la naturaleza',v:1,s:'mood',p:true},{e:'📱',n:'Redes >30min',v:-1,s:'mood',p:false},{e:'😤',n:'Conflicto sin resolver',v:-2,s:'mood',p:false},{e:'📰',n:'Noticias negativas',v:-1,s:'mood',p:false}],
-  focus:[{e:'📖',n:'Bloque estudio 2h',v:2,s:'focus',p:true},{e:'💻',n:'Sesión código 1h',v:2,s:'focus',p:true},{e:'🧘',n:'Meditación 10min',v:1,s:'focus',p:true},{e:'☕',n:'Café + tarea',v:1,s:'focus',p:true},{e:'🔕',n:'Modo sin distracciones',v:2,s:'focus',p:true},{e:'🔔',n:'Notificaciones on',v:-2,s:'focus',p:false},{e:'📱',n:'Doomscroll antes estudiar',v:-2,s:'focus',p:false},{e:'😴',n:'Estudiar con sueño',v:-1,s:'focus',p:false}],
-  motiv:[{e:'✅',n:'Completar una quest',v:2,s:'motiv',p:true},{e:'🏆',n:'Desbloquear logro',v:3,s:'motiv',p:true},{e:'📺',n:'Ver contenido F1',v:1,s:'motiv',p:true},{e:'📖',n:'Leer sobre SWE de éxito',v:1,s:'motiv',p:true},{e:'🎯',n:'Día muy productivo',v:2,s:'motiv',p:true},{e:'❌',n:'Semana sin avance',v:-3,s:'motiv',p:false},{e:'😩',n:'Compararse con otros',v:-2,s:'motiv',p:false}],
+  hp:[{e:'🍎',n:'Comer bien',v:1,p:true},{e:'😴',n:'Dormir 7-8h',v:4,p:true},{e:'💧',n:'Hidratarme',v:1,p:true},{e:'🏃',n:'Ejercicio',v:2,p:true},{e:'📱',n:'Doomscroll >1h',v:-2,p:false},{e:'😴',n:'Dormir <6h',v:-3,p:false}],
+  mood:[{e:'🎵',n:'Escuchar música',v:1,p:true},{e:'👥',n:'Quedar con amigas',v:2,p:true},{e:'🎮',n:'Videojuego',v:1,p:true},{e:'📓',n:'Journaling',v:1,p:true},{e:'📱',n:'Redes >30min',v:-1,p:false},{e:'😤',n:'Conflicto sin resolver',v:-2,p:false}],
+  focus:[{e:'📖',n:'Estudio 2h',v:2,p:true},{e:'💻',n:'Código 1h',v:2,p:true},{e:'🧘',n:'Meditación 10min',v:1,p:true},{e:'☕',n:'Café + tarea',v:1,p:true},{e:'🔔',n:'Notificaciones on',v:-2,p:false},{e:'📱',n:'Doomscroll antes estudiar',v:-2,p:false}],
+  motiv:[{e:'✅',n:'Completar una mission',v:2,p:true},{e:'🏆',n:'Desbloquear logro',v:3,p:true},{e:'📺',n:'Ver contenido F1',v:1,p:true},{e:'🎯',n:'Día muy productivo',v:2,p:true},{e:'❌',n:'Semana sin avance',v:-3,p:false},{e:'😩',n:'Compararse con otros',v:-2,p:false}],
 };
 function renderEnergyMenu(){
   const map={hp:'eaHP',mood:'eaMood',focus:'eaFoc',motiv:'eaMot'};
   Object.entries(map).forEach(([key,elId])=>{
     document.getElementById(elId).innerHTML=EA[key].map(a=>`
-      <div class="ea ${a.p?'':'neg'}" onclick="applyE('${a.s}',${a.v},'${a.n}')">
+      <div class="ea ${a.p?'':'neg'}" onclick="applyE('${key}',${a.v},'${a.n}')">
         <span>${a.e}</span><span class="ea-name">${a.n}</span>
         <span class="ea-eff ${a.p?'ep':'en'}">${a.v>0?'+':''}${a.v}</span>
       </div>`).join('');
@@ -674,124 +795,110 @@ function renderEnergyMenu(){
 }
 function applyE(stat,val,name){
   S[stat]=Math.max(0,Math.min(10,S[stat]+val));
-  notify((val>0?'💚 ':'❤️ ')+name+'\n→ '+(val>0?'+':'')+val,val>0?'var(--green)':'var(--red)');
+  notify((val>0?'💚 ':'❤️ ')+name+' → '+(val>0?'+':'')+val,val>0?'var(--green)':'var(--red)');
   renderEnergy();save();
 }
 
-// ── ACHIEVEMENTS ──────────────────────────────────────────
+// ACHIEVEMENTS
+let achF='all';
 const ACH_CATS=['all',...new Set(ACH_DEF.map(a=>a.cat))];
-let achFilter='all';
 function renderAchievements(){
-  const unlocked=S.achievements.filter(a=>a.unlocked).length;
-  const total=ACH_DEF.length;
+  const ul=S.achievements.filter(a=>a.unlocked).length;
   document.getElementById('achProgress').innerHTML=`
-    <div class="prog-item"><div class="prog-label">Desbloqueados</div><div class="prog-val">${unlocked}/${total}</div></div>
-    <div class="prog-item"><div class="prog-label">XP de logros</div><div class="prog-val">${S.achievements.filter(a=>a.unlocked).reduce((sum,a)=>{const d=ACH_DEF.find(x=>x.id===a.id);return sum+(d?d.xp:0);},0).toLocaleString()}</div></div>
-    <div class="prog-item"><div class="prog-label">Próximo a desbloquear</div><div class="prog-val" style="font-size:13px;">${ACH_DEF.find(a=>!S.achievements.find(s=>s.id===a.id&&s.unlocked)&&a.trigger.type!=='manual')?.name||'—'}</div></div>
-  `;
-  document.getElementById('achFilters').innerHTML=ACH_CATS.map(c=>`<button class="filter-btn ${achFilter===c?'active':''}" onclick="setAchFilter('${c}')">${c==='all'?'Todos':c}</button>`).join('');
-  const filtered=achFilter==='all'?ACH_DEF:ACH_DEF.filter(a=>a.cat===achFilter);
-  const unlockedItems=filtered.filter(a=>S.achievements.find(s=>s.id===a.id&&s.unlocked));
-  const lockedItems=filtered.filter(a=>!S.achievements.find(s=>s.id===a.id&&s.unlocked));
+    <div class="prog-item"><div class="prog-label">Desbloqueados</div><div class="prog-val">${ul}/${ACH_DEF.length}</div></div>
+    <div class="prog-item"><div class="prog-label">XP de logros</div><div class="prog-val">${S.achievements.filter(a=>a.unlocked).reduce((s,a)=>{const d=ACH_DEF.find(x=>x.id===a.id);return s+(d?d.xp:0);},0).toLocaleString()}</div></div>
+    <div class="prog-item"><div class="prog-label">Racha actual</div><div class="prog-val">🔥 ${S.streak||0} días</div></div>`;
+  document.getElementById('achFilters').innerHTML=ACH_CATS.map(c=>`<button class="filter-btn ${achF===c?'active':''}" onclick="setAchF('${c}')">${c==='all'?'Todos':c}</button>`).join('');
+  const list=achF==='all'?ACH_DEF:ACH_DEF.filter(a=>a.cat===achF);
+  const unl=list.filter(a=>S.achievements.find(s=>s.id===a.id&&s.unlocked));
+  const lkd=list.filter(a=>!S.achievements.find(s=>s.id===a.id&&s.unlocked));
   let html='';
-  if(unlockedItems.length){
-    html+='<div class="ach-section-title">✅ Desbloqueados</div>';
-    html+=unlockedItems.map(a=>achHTML(a,true)).join('');
-  }
-  if(lockedItems.length){
-    html+='<div class="ach-section-title">🔒 Por desbloquear</div>';
-    html+=lockedItems.map(a=>achHTML(a,false)).join('');
-  }
+  if(unl.length){html+='<div class="ach-section-title">✅ Desbloqueados</div>';html+=unl.map(a=>achHTML(a,true)).join('');}
+  if(lkd.length){html+='<div class="ach-section-title">🔒 Por desbloquear</div>';html+=lkd.map(a=>achHTML(a,false)).join('');}
   document.getElementById('achList').innerHTML=html;
-  document.getElementById('achCount').textContent='🏆 '+unlocked+' logros desbloqueados';
+  document.getElementById('achCount').textContent='🏆 '+ul+' logros';
 }
 function achHTML(def,unlocked){
-  const triggerText=def.trigger.type==='manual'?'Márca manualmente cuando lo consigas':
-    def.trigger.type==='quest'?'Se desbloquea al completar una quest':
-    def.trigger.type==='stat'?'Se desbloquea cuando '+def.trigger.key+' ≥ '+def.trigger.min+'/10':
-    def.trigger.type==='xp'?'Se desbloquea con '+def.trigger.min.toLocaleString()+' XP':
-    def.trigger.type==='quests_done'?'Se desbloquea al completar '+def.trigger.count+' quests':'';
-  return`<div class="ach ${unlocked?'unlocked':'locked'}" ${def.trigger.type==='manual'&&!unlocked?`onclick="manualUnlock('${def.id}')"`:'style="cursor:default;"'}>
+  const trig=def.trigger==='manual'?'Haz clic cuando lo consigas en la vida real':
+    def.trigger.type==='quest'?'Auto — al completar la quest relacionada':
+    def.trigger.type==='stat'?'Auto — cuando '+def.trigger.key+' ≥ '+def.trigger.min+'/10':
+    def.trigger.type==='xp'?'Auto — con '+def.trigger.min.toLocaleString()+' XP':
+    def.trigger.type==='streak'?'Auto — racha de '+def.trigger.min+' días':
+    def.trigger.type==='daily'?'Auto — al completar la primera daily mission':'';
+  return`<div class="ach ${unlocked?'unlocked':'locked'}" ${def.trigger==='manual'&&!unlocked?`onclick="manualUnlock('${def.id}')"`:'style="cursor:default"'}>
     <div class="ach-icon">${def.icon}</div>
     <div class="ach-body">
-      <div style="margin-bottom:2px;"><span class="tag ${tc(def.cat)} ach-cat">${def.cat}</span></div>
+      <span class="tag ${tc(def.cat)} ach-cat-badge">${def.cat}</span>
       <div class="ach-name">${def.name}</div>
       <div class="ach-desc">${def.desc}</div>
-      <div class="ach-trigger">${unlocked?'✅ Conseguido':triggerText}</div>
+      <div class="ach-trigger">${unlocked?'✅ Conseguido':trig}</div>
     </div>
-    <div class="ach-xp">${unlocked?'+'+def.xp.toLocaleString():'🔒 +'+def.xp.toLocaleString()}</div>
+    <div class="ach-xp">${unlocked?'✅':'+'+def.xp.toLocaleString()}</div>
   </div>`;
 }
-function setAchFilter(f){achFilter=f;renderAchievements();}
+function setAchF(f){achF=f;renderAchievements();}
 function manualUnlock(id){
-  const state=S.achievements.find(a=>a.id===id);
+  const st=S.achievements.find(a=>a.id===id);
   const def=ACH_DEF.find(a=>a.id===id);
-  if(!state||state.unlocked||!def)return;
-  state.unlocked=true;
-  S.xp+=def.xp;S.coins+=def.xp;
-  notify('🏆 '+def.name+'\n+'+def.xp+' XP desbloqueados!','var(--gold)');
+  if(!st||st.unlocked||!def)return;
+  st.unlocked=true;S.xp+=def.xp;S.coins+=def.xp;
+  notify('🏆 '+def.name+'\n+'+def.xp+' XP!','var(--gold)');
   updateXP();renderAchievements();renderEnergy();save();
 }
 
-// ── SKILLS ────────────────────────────────────────────────
+// SKILLS
 const skills=[
-  {cat:'🐍 Python',color:'#3fb950',items:[{n:'Variables, tipos, condicionales',p:10},{n:'Funciones y bucles',p:5},{n:'Listas, dicts, sets',p:0},{n:'OOP básico',p:0},{n:'Ficheros y excepciones',p:0},{n:'APIs y requests',p:0},{n:'Testing con pytest',p:0}]},
-  {cat:'📦 Git & GitHub',color:'#e3a93a',items:[{n:'Primer commit',p:0},{n:'Branches y merges',p:0},{n:'Pull requests',p:0},{n:'Open source contributions',p:0}]},
-  {cat:'🧩 Algoritmos',color:'#58a6ff',items:[{n:'Arrays y strings',p:5},{n:'Two pointers',p:0},{n:'Sliding window',p:0},{n:'Recursividad',p:0},{n:'Árboles y grafos',p:0},{n:'Dynamic programming',p:0}]},
-  {cat:'🗄️ Bases de Datos',color:'#14b8a6',items:[{n:'SQL básico (SELECT, JOIN)',p:70},{n:'Diseño relacional',p:60},{n:'PostgreSQL',p:10},{n:'NoSQL / MongoDB',p:0},{n:'ORM (SQLAlchemy)',p:0}]},
-  {cat:'🌐 Redes',color:'#8b5cf6',items:[{n:'TCP/IP fundamentos',p:80},{n:'DNS, HTTP, HTTPS',p:75},{n:'APIs REST',p:20},{n:'Seguridad de redes',p:65},{n:'VPNs y firewalls',p:50}]},
-  {cat:'🔧 DevOps',color:'#f85149',items:[{n:'Linux y terminal',p:60},{n:'Docker básico',p:0},{n:'Docker Compose',p:0},{n:'CI/CD GitHub Actions',p:0},{n:'Cloud (AWS/Azure)',p:0},{n:'Kubernetes básico',p:0}]},
+  {cat:'🐍 Python',color:'#3fb950',items:[{n:'Variables y tipos',p:10},{n:'Funciones y bucles',p:5},{n:'Listas y dicts',p:0},{n:'OOP básico',p:0},{n:'APIs y requests',p:0},{n:'Testing',p:0}]},
+  {cat:'📦 Git',color:'#e3a93a',items:[{n:'Primer commit',p:0},{n:'Branches y merges',p:0},{n:'Pull requests',p:0},{n:'Open source',p:0}]},
+  {cat:'🧩 Algoritmos',color:'#58a6ff',items:[{n:'Arrays y strings',p:5},{n:'Two pointers',p:0},{n:'Recursividad',p:0},{n:'Grafos',p:0},{n:'DP',p:0}]},
+  {cat:'🗄️ Bases de Datos',color:'#14b8a6',items:[{n:'SQL básico',p:70},{n:'Diseño relacional',p:60},{n:'PostgreSQL',p:10},{n:'NoSQL',p:0}]},
+  {cat:'🌐 Redes',color:'#8b5cf6',items:[{n:'TCP/IP',p:80},{n:'DNS, HTTP',p:75},{n:'APIs REST',p:20},{n:'Seguridad',p:65}]},
+  {cat:'🔧 DevOps',color:'#f85149',items:[{n:'Linux y terminal',p:60},{n:'Docker',p:0},{n:'CI/CD',p:0},{n:'Cloud',p:0}]},
 ];
 function renderSkills(){
   document.getElementById('skillsGrid').innerHTML=skills.map(cat=>`
-    <div class="card sk-cat"><div class="sk-cat-title">${cat.cat}</div>
-    ${cat.items.map(s=>`<div class="sk-row"><div class="sk-name">${s.n}</div><div class="sk-bar-bg"><div class="sk-bar" style="width:${s.p}%;background:${cat.color};"></div></div><div class="sk-ico">${s.p>0?'✅':'🔒'}</div></div>`).join('')}
+    <div class="card"><div class="sk-cat-title">${cat.cat}</div>
+    ${cat.items.map(s=>`<div class="sk-row"><div class="sk-name">${s.n}</div><div class="sk-bar-bg"><div class="sk-bar" style="width:${s.p}%;background:${cat.color};"></div></div><div style="font-size:13px;">${s.p>0?'✅':'🔒'}</div></div>`).join('')}
     </div>`).join('');
 }
 
-// ── RADAR ─────────────────────────────────────────────────
-let radarChart1=null,radarChart2=null;
-function getRadarVals(){return Object.values(S.radarStats);}
-function getRadarKeys(){return Object.keys(S.radarStats);}
-function buildRadar(canvasId){
-  const ctx=document.getElementById(canvasId).getContext('2d');
-  return new Chart(ctx,{type:'radar',data:{labels:getRadarKeys(),datasets:[{label:'Yuna',data:getRadarVals(),backgroundColor:'rgba(139,92,246,0.2)',borderColor:'#8b5cf6',borderWidth:2,pointBackgroundColor:'#8b5cf6',pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:10,ticks:{display:false},grid:{color:'rgba(48,54,61,0.8)'},pointLabels:{color:'#8b949e',font:{size:10}},angleLines:{color:'rgba(48,54,61,0.8)'}}}}});
+// RADAR
+let rc1=null,rc2=null;
+function buildRadar(id){
+  const ctx=document.getElementById(id).getContext('2d');
+  return new Chart(ctx,{type:'radar',data:{labels:Object.keys(S.radarStats),datasets:[{data:Object.values(S.radarStats),backgroundColor:'rgba(139,92,246,0.2)',borderColor:'#8b5cf6',borderWidth:2,pointBackgroundColor:'#8b5cf6',pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:10,ticks:{display:false},grid:{color:'rgba(48,54,61,0.8)'},pointLabels:{color:'#8b949e',font:{size:10}},angleLines:{color:'rgba(48,54,61,0.8)'}}}}});
 }
-function updateRadarCharts(){
-  const d=getRadarVals();
-  if(radarChart1){radarChart1.data.datasets[0].data=d;radarChart1.update();}
-  if(radarChart2){radarChart2.data.datasets[0].data=d;radarChart2.update();}
+function updateRadars(){
+  const d=Object.values(S.radarStats);
+  if(rc1){rc1.data.datasets[0].data=d;rc1.update();}
+  if(rc2){rc2.data.datasets[0].data=d;rc2.update();}
 }
-
-// ── STAT EDITOR ───────────────────────────────────────────
 function renderStatEditor(){
   document.getElementById('statEditor').innerHTML=Object.keys(S.radarStats).map(k=>`
     <div class="stat-editor-row">
       <div class="stat-editor-label">${k}</div>
-      <button class="stat-minus" onclick="changeStat('${k}',-1)">−</button>
+      <button class="stat-minus" onclick="chStat('${k}',-1)">−</button>
       <div class="stat-val-display" id="sv-${k}">${S.radarStats[k]}/10</div>
-      <button class="stat-plus" onclick="changeStat('${k}',1)">+</button>
+      <button class="stat-plus" onclick="chStat('${k}',1)">+</button>
       <div class="stat-bar-wrap"><div class="bar-bg"><div class="bar b-purple" id="sb-${k}" style="width:${S.radarStats[k]*10}%"></div></div></div>
     </div>`).join('');
 }
-function changeStat(key,delta){
-  const nv=Math.max(0,Math.min(10,S.radarStats[key]+delta));
-  if(nv===S.radarStats[key])return;
-  S.radarStats[key]=nv;
-  document.getElementById('sv-'+key).textContent=nv+'/10';
-  document.getElementById('sb-'+key).style.width=(nv*10)+'%';
-  updateRadarCharts();
-  checkAchievements({statKey:key});
-  save();
-  notify((delta>0?'📈 ':'📉 ')+key+' → '+nv+'/10');
+function chStat(k,d){
+  const nv=Math.max(0,Math.min(10,S.radarStats[k]+d));
+  if(nv===S.radarStats[k])return;
+  S.radarStats[k]=nv;
+  document.getElementById('sv-'+k).textContent=nv+'/10';
+  document.getElementById('sb-'+k).style.width=(nv*10)+'%';
+  updateRadars();checkAchievements({statKey:k});save();
+  notify((d>0?'📈 ':'📉 ')+k+' → '+nv+'/10');
 }
 
-// ── INIT ──────────────────────────────────────────────────
-radarChart1=buildRadar('radarChart');
-renderEnergy();renderQuests();renderEnergyMenu();
+// INIT
+rc1=buildRadar('radarChart');
+renderEnergy();renderDaily();renderQuests();renderEnergyMenu();
 renderBoss();renderShop();renderArcs();renderSkills();renderAchievements();updateXP();
 renderStatEditor();
-setTimeout(()=>{radarChart2=buildRadar('radarChart2');},200);
+setTimeout(()=>{rc2=buildRadar('radarChart2');},200);
 </script>
 </body>
 </html>
