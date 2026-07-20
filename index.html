@@ -135,6 +135,12 @@ header{
 .pill-work{background:rgba(185,140,242,.15); color:var(--purple);}
 .pill-uoc{background:rgba(79,214,196,.15); color:var(--teal);}
 .pill-personal{background:rgba(242,169,60,.15); color:var(--amber);}
+.pill-c0{background:rgba(185,140,242,.15); color:var(--purple);}
+.pill-c1{background:rgba(79,214,196,.15); color:var(--teal);}
+.pill-c2{background:rgba(242,169,60,.15); color:var(--amber);}
+.pill-c3{background:rgba(111,168,245,.15); color:var(--blue);}
+.pill-c4{background:rgba(111,208,140,.15); color:var(--green);}
+.pill-c5{background:rgba(239,91,91,.15); color:var(--red);}
 .focus-item .del{cursor:pointer; color:var(--text-dim); font-size:16px; padding:0 4px; flex-shrink:0;}
 .focus-item .del:hover{color:var(--red);}
 .add-row{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
@@ -196,7 +202,10 @@ header{
 /* life goals kanban */
 .kanban{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
 @media(max-width:760px){ .kanban{grid-template-columns:1fr;} }
-.kanban-col{background:var(--panel-2); border:1px solid var(--line); border-radius:4px; padding:10px;}
+.kanban-col{background:var(--panel-2); border:1px solid var(--line); border-radius:4px; padding:10px; transition:border-color .15s, background .15s;}
+.kanban-col.drag-over{border-color:var(--amber); background:rgba(242,169,60,.06);}
+.goal-card{cursor:grab;}
+.goal-card.dragging{opacity:.35;}
 .kanban-col h4{font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid var(--line);}
 .goal-card{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:10px; margin-bottom:8px;}
 .goal-card:last-child{margin-bottom:0;}
@@ -241,7 +250,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v5</div>
+      <div class="tag">life dashboard // build v6</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -295,13 +304,13 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
       <h3>Today's Focus <span class="accent" id="focus-count">0/0</span></h3>
       <div id="focus-list"></div>
       <div class="add-row">
-        <select id="new-tag">
-          <option value="work">Timestamp</option>
-          <option value="uoc">UOC</option>
-          <option value="personal">Personal</option>
-        </select>
+        <select id="new-tag"></select>
         <input type="text" id="new-focus" placeholder="Añadir tarea de hoy...">
         <button onclick="addFocus()">+</button>
+      </div>
+      <div class="add-row" style="margin-top:6px;">
+        <input type="text" id="new-focus-tag" placeholder="Nuevo tema (ej. Casa, Joan...)">
+        <button class="ghost" onclick="addFocusTag()">+ tema</button>
       </div>
     </div>
 
@@ -470,6 +479,11 @@ let state = {
     linkedFocusId: '',
     completed: {} // { 'YYYY-MM-DD': count }
   },
+  focusTags: [
+    {key:'work', label:'Timestamp'},
+    {key:'uoc', label:'UOC'},
+    {key:'personal', label:'Personal'},
+  ],
 };
 
 function load(){
@@ -686,11 +700,16 @@ function render(){
     <div class="focus-item ${f.done?'done':''}">
       <input type="checkbox" ${f.done?'checked':''} onchange="toggleFocus(${f.id})">
       <span>${escapeHtml(f.text)}</span>
-      <span class="tag-pill pill-${f.tag}">${f.tag==='work'?'Timestamp':f.tag==='uoc'?'UOC':'Personal'}</span>
+      <span class="tag-pill ${tagPillClass(f.tag)}">${escapeHtml(tagLabel(f.tag))}</span>
       <span class="del" onclick="removeFocus(${f.id})">✕</span>
     </div>`).join('') || '<div style="color:var(--text-dim); font-size:13px;">Sin tareas. Añade una abajo.</div>';
   const done = state.focus.filter(f=>f.done).length;
   document.getElementById('focus-count').textContent = `${done}/${state.focus.length}`;
+
+  const tagSel = document.getElementById('new-tag');
+  const prevTag = tagSel.value;
+  tagSel.innerHTML = state.focusTags.map(t => `<option value="${t.key}">${escapeHtml(t.label)}</option>`).join('');
+  if(state.focusTags.some(t=>t.key===prevTag)) tagSel.value = prevTag;
 
   document.getElementById('steps-val').textContent = state.steps.toLocaleString('es-ES');
   document.getElementById('bar-steps').style.width = Math.min(100, (state.steps/10000)*100) + '%';
@@ -751,10 +770,10 @@ function render(){
 
   const cols = {todo:'To Do', doing:'Doing', done:'Done ✨'};
   document.getElementById('kanban').innerHTML = Object.entries(cols).map(([key,label]) => `
-    <div class="kanban-col">
+    <div class="kanban-col" data-status="${key}" ondragover="kanbanDragOver(event)" ondragleave="kanbanDragLeave(event)" ondrop="kanbanDrop(event, '${key}')">
       <h4>${label}</h4>
       ${state.goals.filter(g=>g.status===key).map(g => `
-        <div class="goal-card">
+        <div class="goal-card" draggable="true" data-id="${g.id}" ondragstart="kanbanDragStart(event, ${g.id})" ondragend="kanbanDragEnd(event)">
           <div class="g-title"><span>${g.emoji||'🎯'} ${escapeHtml(g.title)}</span><span class="del-x" onclick="removeGoal(${g.id})">✕</span></div>
           ${g.due ? `<div class="g-due">${escapeHtml(g.due)}</div>` : ''}
           <select onchange="setGoalStatus(${g.id}, this.value)">
@@ -762,7 +781,7 @@ function render(){
             <option value="doing" ${g.status==='doing'?'selected':''}>Doing</option>
             <option value="done" ${g.status==='done'?'selected':''}>Done</option>
           </select>
-        </div>`).join('') || '<div style="color:var(--text-dim); font-size:11px;">—</div>'}
+        </div>`).join('') || '<div class="kanban-empty" style="color:var(--text-dim); font-size:11px;">Suelta aquí</div>'}
     </div>`).join('');
 
   document.getElementById('nn-list').innerHTML = state.nn.map((t,i) => `
@@ -788,6 +807,25 @@ function render(){
 /* ---------- focus ---------- */
 function toggleFocus(id){ const f=state.focus.find(x=>x.id===id); if(f){ f.done=!f.done; save(); render(); } }
 function removeFocus(id){ state.focus = state.focus.filter(x=>x.id!==id); save(); render(); }
+function tagLabel(key){
+  const t = state.focusTags.find(x=>x.key===key);
+  return t ? t.label : key;
+}
+function tagPillClass(key){
+  const i = state.focusTags.findIndex(x=>x.key===key);
+  return 'pill-c' + (i >= 0 ? i % 6 : 0);
+}
+function addFocusTag(){
+  const input = document.getElementById('new-focus-tag');
+  const label = input.value.trim();
+  if(!label) return;
+  const key = label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || ('tema-' + Date.now());
+  if(state.focusTags.some(t=>t.key===key)){ input.value=''; return; }
+  state.focusTags.push({key, label});
+  input.value = '';
+  save(); render();
+  document.getElementById('new-tag').value = key;
+}
 function addFocus(){
   const input = document.getElementById('new-focus');
   const tag = document.getElementById('new-tag').value;
@@ -866,6 +904,33 @@ function removeGoal(id){ state.goals = state.goals.filter(g=>g.id!==id); save();
 function setGoalStatus(id, status){
   const g = state.goals.find(x=>x.id===id);
   if(g){ g.status = status; save(); render(); }
+}
+
+let dragGoalId = null;
+function kanbanDragStart(ev, id){
+  dragGoalId = id;
+  ev.dataTransfer.effectAllowed = 'move';
+  try{ ev.dataTransfer.setData('text/plain', String(id)); }catch(e){}
+  ev.target.classList.add('dragging');
+}
+function kanbanDragEnd(ev){
+  ev.target.classList.remove('dragging');
+  document.querySelectorAll('.kanban-col').forEach(c=>c.classList.remove('drag-over'));
+}
+function kanbanDragOver(ev){
+  ev.preventDefault();
+  ev.dataTransfer.dropEffect = 'move';
+  ev.currentTarget.classList.add('drag-over');
+}
+function kanbanDragLeave(ev){
+  ev.currentTarget.classList.remove('drag-over');
+}
+function kanbanDrop(ev, status){
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('drag-over');
+  const id = dragGoalId !== null ? dragGoalId : parseInt(ev.dataTransfer.getData('text/plain'));
+  if(id !== null && !isNaN(id)) setGoalStatus(id, status);
+  dragGoalId = null;
 }
 
 /* ---------- alarms / no negociables ---------- */
