@@ -161,6 +161,14 @@ header{
 .steps-controls{display:flex; gap:8px; margin-top:8px;}
 .steps-controls input{width:90px;}
 .weight-log{margin-top:10px;}
+.water-row{display:flex; align-items:center; gap:16px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--line);}
+.water-glass-wrap{flex-shrink:0; width:52px;}
+.water-glass{width:100%; height:auto; display:block;}
+#water-fill{transition: y .5s ease, height .5s ease;}
+.water-info{flex:1; display:flex; flex-direction:column; gap:8px;}
+.water-count{font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:var(--blue); display:flex; align-items:baseline; gap:6px;}
+.water-goal{font-size:11px; color:var(--text-dim); font-weight:400;}
+.water-controls{display:flex; gap:8px; align-items:center;}
 .weight-entry{display:flex; justify-content:space-between; font-size:12px; padding:5px 0; border-bottom:1px dashed var(--line); font-family:'JetBrains Mono',monospace; color:var(--text-dim);}
 .weight-entry:last-child{border-bottom:none;}
 .delta.up{color:var(--red);} .delta.down{color:var(--green);}
@@ -250,7 +258,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v6</div>
+      <div class="tag">life dashboard // build v7</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -335,6 +343,24 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
         <div class="steps-controls">
           <input type="number" id="steps-input" placeholder="pasos hoy">
           <button onclick="setSteps()">Guardar</button>
+        </div>
+      </div>
+      <div class="water-row">
+        <div class="water-glass-wrap">
+          <svg viewBox="0 0 60 80" class="water-glass">
+            <clipPath id="glass-clip"><path d="M8 4 H52 L46 76 H14 Z"/></clipPath>
+            <g clip-path="url(#glass-clip)">
+              <rect id="water-fill" x="4" y="80" width="52" height="0" fill="var(--blue)"></rect>
+            </g>
+            <path d="M8 4 H52 L46 76 H14 Z" fill="none" stroke="var(--line)" stroke-width="2.5"/>
+          </svg>
+        </div>
+        <div class="water-info">
+          <div class="water-count"><span id="water-val">0</span><span class="water-goal">/ 8 vasos</span></div>
+          <div class="water-controls">
+            <button class="habit-btn" onclick="adjustWater(-1)">–</button>
+            <button class="pomo-btn primary" style="padding:6px 14px;" onclick="adjustWater(1)">+ vaso</button>
+          </div>
         </div>
       </div>
       <div class="weight-log">
@@ -484,6 +510,7 @@ let state = {
     {key:'uoc', label:'UOC'},
     {key:'personal', label:'Personal'},
   ],
+  water: { count: 0, date: todayKey(), history: {} },
 };
 
 function load(){
@@ -496,10 +523,30 @@ function load(){
       if(parsed.pomodoro){
         state.pomodoro = {...state.pomodoro, ...parsed.pomodoro, running:false};
       }
+      if(parsed.water){
+        state.water = {...state.water, ...parsed.water};
+      }
     }
   }catch(e){ /* primera vez */ }
+  rolloverWater();
   renderBackupLabel();
   render();
+}
+function rolloverWater(){
+  const today = todayKey();
+  if(state.water.date !== today){
+    if(state.water.count > 0){
+      state.water.history[state.water.date] = state.water.count;
+    }
+    state.water.date = today;
+    state.water.count = 0;
+    save();
+  }
+}
+function adjustWater(delta){
+  rolloverWater();
+  state.water.count = Math.max(0, state.water.count + delta);
+  save(); render();
 }
 function save(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -540,6 +587,7 @@ function importBackup(event){
       state = {...state, ...imported};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...imported.sectors};
       if(imported.pomodoro){ state.pomodoro = {...state.pomodoro, ...imported.pomodoro, running:false}; }
+      if(imported.water){ state.water = {...state.water, ...imported.water}; }
       clearInterval(pomoInterval);
       save();
       localStorage.setItem(BACKUP_TS_KEY, new Date().toISOString());
@@ -713,6 +761,15 @@ function render(){
 
   document.getElementById('steps-val').textContent = state.steps.toLocaleString('es-ES');
   document.getElementById('bar-steps').style.width = Math.min(100, (state.steps/10000)*100) + '%';
+
+  document.getElementById('water-val').textContent = state.water.count;
+  const waterGoal = 8;
+  const pct = Math.min(1, state.water.count / waterGoal);
+  const fillEl = document.getElementById('water-fill');
+  const glassTop = 4, glassBottom = 76, glassHeight = glassBottom - glassTop;
+  const fillHeight = glassHeight * pct;
+  fillEl.setAttribute('height', fillHeight);
+  fillEl.setAttribute('y', glassBottom - fillHeight);
 
   const wl = document.getElementById('weight-list');
   const sorted = [...state.weights].sort((a,b)=> new Date(b.date)-new Date(a.date)).slice(0,6);
@@ -954,6 +1011,7 @@ function removeNN(i){ state.nn.splice(i,1); save(); render(); }
 
 updateClock();
 setInterval(updateClock, 60000);
+setInterval(() => { rolloverWater(); render(); }, 60000);
 load();
 </script>
 </body>
