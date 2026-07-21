@@ -263,7 +263,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v8</div>
+      <div class="tag">life dashboard // build v9</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -333,7 +333,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
       <div class="diary-field"><label>Hoy</label><textarea id="d-hoy" placeholder="Qué he hecho hoy..."></textarea></div>
       <div class="diary-field"><label>Continúa mañana</label><textarea id="d-continua" placeholder="Qué queda abierto..."></textarea></div>
       <div class="diary-field"><label>Nota</label><textarea id="d-nota" placeholder="Algo a recordar, bloqueo, contexto..."></textarea></div>
-      <div class="add-row"><button onclick="saveDiary()">Guardar entrada de hoy</button></div>
+      <div class="add-row"><button id="diary-save-btn" onclick="saveDiary()">Guardar entrada de hoy</button></div>
       <div class="diary-log" id="diary-log"></div>
     </div>
   </div>
@@ -563,9 +563,19 @@ function adjustWater(delta){
   state.water.count = Math.max(0, state.water.count + delta);
   save(); render();
 }
+let storageWarned = false;
 function save(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch(e){ console.error('no se pudo guardar', e); }
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  }catch(e){
+    console.error('no se pudo guardar', e);
+    if(!storageWarned){
+      storageWarned = true;
+      alert('Este navegador está bloqueando el guardado local (localStorage). Si has abierto el archivo con doble clic, prueba a subirlo a GitHub Pages o a abrirlo desde un servidor local — en modo incógnito o abierto como archivo suelto algunos navegadores lo bloquean.');
+    }
+    return false;
+  }
 }
 
 const BACKUP_TS_KEY = 'yuna-dashboard-backup-ts';
@@ -978,7 +988,15 @@ function saveDiary(){
     continua: document.getElementById('d-continua').value.trim(),
     nota: document.getElementById('d-nota').value.trim(),
   };
-  save(); render();
+  const ok = save();
+  render();
+  const btn = document.getElementById('diary-save-btn');
+  if(btn){
+    const original = 'Guardar entrada de hoy';
+    btn.textContent = ok ? '✓ Guardado' : '✕ No se pudo guardar';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
+  }
 }
 
 /* ---------- milestones ---------- */
