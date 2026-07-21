@@ -205,7 +205,12 @@ header{
 .milestone.custom::before{border-color:var(--teal);}
 .milestone .m-date{font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); letter-spacing:1px;}
 .milestone .m-title{font-size:14px; font-weight:600; margin-top:1px;}
-.milestone .m-days{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--amber); margin-top:2px;}
+.milestone .m-days-row{display:flex; align-items:center; gap:10px; margin-top:3px; flex-wrap:wrap;}
+.milestone .m-days{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--amber);}
+.m-date-edit{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim);
+  border-radius:3px; padding:2px 6px; font-family:'JetBrains Mono',monospace; font-size:10px;
+}
 
 /* life goals kanban */
 .kanban{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
@@ -258,12 +263,12 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v7</div>
+      <div class="tag">life dashboard // build v8</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
       <div class="hdr-stat"><div class="l">Fecha</div><div class="v" id="clock-date">--</div></div>
-      <div class="hdr-stat"><div class="l">Barcelona</div><div class="v" id="weather-val">21° ☁️</div></div>
+      <div class="hdr-stat"><div class="l">Barcelona</div><div class="v" id="weather-val">…</div></div>
       <div class="hdr-backup">
         <div class="hdr-stat"><div class="l">Última copia</div><div class="v small" id="backup-last">nunca</div></div>
         <div class="backup-btns">
@@ -511,6 +516,7 @@ let state = {
     {key:'personal', label:'Personal'},
   ],
   water: { count: 0, date: todayKey(), history: {} },
+  focusRolloverDate: todayKey(),
 };
 
 function load(){
@@ -529,6 +535,7 @@ function load(){
     }
   }catch(e){ /* primera vez */ }
   rolloverWater();
+  rolloverFocus();
   renderBackupLabel();
   render();
 }
@@ -540,6 +547,14 @@ function rolloverWater(){
     }
     state.water.date = today;
     state.water.count = 0;
+    save();
+  }
+}
+function rolloverFocus(){
+  const today = todayKey();
+  if(state.focusRolloverDate !== today){
+    state.focus = state.focus.filter(f => !f.done);
+    state.focusRolloverDate = today;
     save();
   }
 }
@@ -610,8 +625,37 @@ function daysUntil(dateStr){
   const now = new Date(); now.setHours(0,0,0,0);
   return Math.ceil((target - now) / 86400000);
 }
+function getMilestoneDate(id){
+  const m = state.milestones.find(x=>x.id===id);
+  return m ? m.date : new Date().toISOString().slice(0,10);
+}
 function todayKey(){ return new Date().toISOString().slice(0,10); }
 function escapeHtml(str){ const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+
+function weatherEmoji(code){
+  if(code === 0) return '☀️';
+  if([1,2].includes(code)) return '🌤️';
+  if(code === 3) return '☁️';
+  if([45,48].includes(code)) return '🌫️';
+  if([51,53,55,56,57].includes(code)) return '🌦️';
+  if([61,63,65,66,67,80,81,82].includes(code)) return '🌧️';
+  if([71,73,75,77,85,86].includes(code)) return '❄️';
+  if([95,96,99].includes(code)) return '⛈️';
+  return '☁️';
+}
+async function fetchWeather(){
+  const el = document.getElementById('weather-val');
+  try{
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=41.3851&longitude=2.1734&current=temperature_2m,weather_code&timezone=Europe%2FMadrid');
+    if(!res.ok) throw new Error('bad response');
+    const data = await res.json();
+    const temp = Math.round(data.current.temperature_2m);
+    const emoji = weatherEmoji(data.current.weather_code);
+    el.textContent = `${temp}° ${emoji}`;
+  }catch(e){
+    el.textContent = 'N/D';
+  }
+}
 
 /* ---------- POMODORO ---------- */
 let pomoInterval = null;
@@ -714,7 +758,7 @@ function renderSectors(){
       <h2>${escapeHtml(s.title)}</h2>
       <div class="sub">${escapeHtml(s.sub)}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${s.pct}%"></div></div>
-      <div class="meta"><span>${k==='uoc' ? daysUntil('2026-09-23')+' días' : (k==='work' ? daysUntil('2026-11-30')+' días' : '')}</span><span>${s.pct}%</span></div>
+      <div class="meta"><span>${k==='uoc' ? daysUntil(getMilestoneDate('auto-uoc'))+' días' : (k==='work' ? daysUntil(getMilestoneDate('auto-ic20'))+' días' : '')}</span><span>${s.pct}%</span></div>
       <div class="sector-edit ${open?'open':''}">
         <input type="text" id="edit-title-${k}" value="${escapeHtml(s.title)}" placeholder="título">
         <input type="text" id="edit-sub-${k}" value="${escapeHtml(s.sub)}" placeholder="subtítulo">
@@ -795,14 +839,16 @@ function render(){
   document.getElementById('portfolio-total').textContent = total.toLocaleString('es-ES') + ' €';
   document.getElementById('portfolio-body').className = state.blurred ? 'blurred' : '';
 
-  const entries = Object.entries(state.diary).sort((a,b)=> b[0].localeCompare(a[0])).slice(0,5);
-  document.getElementById('diary-log').innerHTML = entries.map(([date, e]) => `
+  const yesterdayKey = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); })();
+  const yEntry = state.diary[yesterdayKey];
+  const yLabel = new Date(yesterdayKey).toLocaleDateString('es-ES', {weekday:'long', day:'2-digit', month:'short'});
+  document.getElementById('diary-log').innerHTML = yEntry ? `
     <div class="diary-entry">
-      <div class="d-date">${date}</div>
-      ${e.hoy ? `<div class="d-line"><b>Hoy:</b> ${escapeHtml(e.hoy)}</div>`:''}
-      ${e.continua ? `<div class="d-line"><b>Continúa:</b> ${escapeHtml(e.continua)}</div>`:''}
-      ${e.nota ? `<div class="d-line"><b>Nota:</b> ${escapeHtml(e.nota)}</div>`:''}
-    </div>`).join('') || '<div style="color:var(--text-dim); font-size:12px;">Sin entradas todavía.</div>';
+      <div class="d-date">Ayer · ${yLabel}</div>
+      ${yEntry.hoy ? `<div class="d-line"><b>Hoy:</b> ${escapeHtml(yEntry.hoy)}</div>`:''}
+      ${yEntry.continua ? `<div class="d-line"><b>Continúa:</b> ${escapeHtml(yEntry.continua)}</div>`:''}
+      ${yEntry.nota ? `<div class="d-line"><b>Nota:</b> ${escapeHtml(yEntry.nota)}</div>`:''}
+    </div>` : '<div style="color:var(--text-dim); font-size:12px;">Sin entrada de ayer.</div>';
   const t = state.diary[todayKey()];
   if(t){
     document.getElementById('d-hoy').value = t.hoy || '';
@@ -816,10 +862,13 @@ function render(){
     const dateLabel = new Date(m.date).toLocaleDateString('es-ES', {day:'2-digit', month:'short', year:'numeric'}).toUpperCase();
     return `
     <div class="milestone ${days<=0?'done':''} ${m.auto?'':'custom'}">
-      <div>
+      <div style="flex:1;">
         <div class="m-date">${dateLabel}</div>
         <div class="m-title">${escapeHtml(m.title)}</div>
-        <div class="m-days">${days>0?days+' días restantes':'en curso'}</div>
+        <div class="m-days-row">
+          <span class="m-days">${days>0?days+' días restantes':'en curso'}</span>
+          <input type="date" class="m-date-edit" value="${m.date}" onchange="updateMilestoneDate('${m.id}', this.value)">
+        </div>
       </div>
       ${m.auto ? '' : `<span class="del-x" onclick="removeMilestone('${m.id}')" style="margin-top:2px;">✕</span>`}
     </div>`;
@@ -943,6 +992,11 @@ function addMilestone(){
   save(); render();
 }
 function removeMilestone(id){ state.milestones = state.milestones.filter(m=>m.id!==id); save(); render(); }
+function updateMilestoneDate(id, newDate){
+  if(!newDate) return;
+  const m = state.milestones.find(x=>x.id===id);
+  if(m){ m.date = newDate; save(); render(); }
+}
 
 /* ---------- goals ---------- */
 function addGoal(){
@@ -1011,7 +1065,9 @@ function removeNN(i){ state.nn.splice(i,1); save(); render(); }
 
 updateClock();
 setInterval(updateClock, 60000);
-setInterval(() => { rolloverWater(); render(); }, 60000);
+setInterval(() => { rolloverWater(); rolloverFocus(); render(); }, 60000);
+fetchWeather();
+setInterval(fetchWeather, 1800000);
 load();
 </script>
 </body>
