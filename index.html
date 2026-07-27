@@ -59,6 +59,15 @@ header{
   padding:5px 9px; border-radius:3px; cursor:pointer; text-transform:uppercase;
 }
 .mini-btn:hover{border-color:var(--amber); color:var(--amber);}
+.sync-panel{
+  display:none; width:100%; flex-basis:100%; background:var(--panel); border:1px solid var(--line); border-radius:4px;
+  padding:14px 16px; margin-top:12px; gap:10px; flex-direction:column;
+}
+.sync-panel.open{display:flex;}
+.sync-help{font-size:12px; color:var(--text-dim); line-height:1.5;}
+#sync-status.ok{color:var(--green);}
+#sync-status.err{color:var(--red);}
+#sync-status.syncing{color:var(--amber);}
 
 /* ---------- ALARM STRIP ---------- */
 .alarm-strip{display:none; align-items:center; gap:10px; background:rgba(239,91,91,.1); border:1px solid rgba(239,91,91,.35); border-radius:4px; padding:9px 14px; margin-bottom:16px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#f5a3a3;}
@@ -263,12 +272,18 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v9</div>
+      <div class="tag">life dashboard // build v10</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
       <div class="hdr-stat"><div class="l">Fecha</div><div class="v" id="clock-date">--</div></div>
       <div class="hdr-stat"><div class="l">Barcelona</div><div class="v" id="weather-val">…</div></div>
+      <div class="hdr-backup">
+        <div class="hdr-stat"><div class="l">Sync</div><div class="v small" id="sync-status">desconectado</div></div>
+        <div class="backup-btns">
+          <button class="mini-btn" onclick="toggleSyncPanel()">⇄ sync</button>
+        </div>
+      </div>
       <div class="hdr-backup">
         <div class="hdr-stat"><div class="l">Última copia</div><div class="v small" id="backup-last">nunca</div></div>
         <div class="backup-btns">
@@ -276,6 +291,17 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
           <button class="mini-btn" onclick="document.getElementById('import-file').click()" title="Cargar copia">↑ cargar</button>
           <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importBackup(event)">
         </div>
+      </div>
+    </div>
+    <div class="sync-panel" id="sync-panel">
+      <p class="sync-help">Pega aquí la URL de tu Realtime Database de Firebase y un código propio (el que quieras, es tu "contraseña" de sincronización). Hazlo igual en cada dispositivo con los mismos datos.</p>
+      <div class="add-row">
+        <input type="text" id="sync-url" placeholder="https://tu-proyecto-default-rtdb.europe-west1.firebasedatabase.app">
+      </div>
+      <div class="add-row">
+        <input type="text" id="sync-code" placeholder="tu código de sincronización (ej. yuna-2026)">
+        <button onclick="connectSync()">Conectar</button>
+        <button class="ghost" onclick="disconnectSync()">Desconectar</button>
       </div>
     </div>
   </header>
@@ -565,8 +591,10 @@ function adjustWater(delta){
 }
 let storageWarned = false;
 function save(){
+  state._updatedAt = new Date().toISOString();
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    pushToCloud();
     return true;
   }catch(e){
     console.error('no se pudo guardar', e);
@@ -579,6 +607,97 @@ function save(){
 }
 
 const BACKUP_TS_KEY = 'yuna-dashboard-backup-ts';
+
+/* ---------- SYNC (Firebase Realtime Database, opcional) ---------- */
+const SYNC_CONFIG_KEY = 'yuna-dashboard-sync-config'; // { url, code } — vive solo en este navegador, no en el backup
+let syncConfig = null;
+let syncPushTimer = null;
+
+function loadSyncConfig(){
+  try{
+    const raw = localStorage.getItem(SYNC_CONFIG_KEY);
+    syncConfig = raw ? JSON.parse(raw) : null;
+  }catch(e){ syncConfig = null; }
+}
+function toggleSyncPanel(){
+  const panel = document.getElementById('sync-panel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open') && syncConfig){
+    document.getElementById('sync-url').value = syncConfig.url || '';
+    document.getElementById('sync-code').value = syncConfig.code || '';
+  }
+}
+function setSyncStatus(text, cls){
+  const el = document.getElementById('sync-status');
+  el.textContent = text;
+  el.className = 'v small' + (cls ? ' ' + cls : '');
+}
+function syncEndpoint(){
+  if(!syncConfig || !syncConfig.url || !syncConfig.code) return null;
+  const base = syncConfig.url.replace(/\/$/, '');
+  const safeCode = syncConfig.code.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-');
+  return `${base}/sync/${safeCode}.json`;
+}
+function connectSync(){
+  const url = document.getElementById('sync-url').value.trim();
+  const code = document.getElementById('sync-code').value.trim();
+  if(!url || !code){ alert('Faltan la URL o el código.'); return; }
+  syncConfig = {url, code};
+  localStorage.setItem(SYNC_CONFIG_KEY, JSON.stringify(syncConfig));
+  setSyncStatus('conectando…', 'syncing');
+  pullFromCloud(true);
+}
+function disconnectSync(){
+  syncConfig = null;
+  localStorage.removeItem(SYNC_CONFIG_KEY);
+  setSyncStatus('desconectado');
+}
+function pushToCloud(){
+  const endpoint = syncEndpoint();
+  if(!endpoint) return;
+  clearTimeout(syncPushTimer);
+  syncPushTimer = setTimeout(async () => {
+    setSyncStatus('sincronizando…', 'syncing');
+    try{
+      const res = await fetch(endpoint, {method:'PUT', body: JSON.stringify(state)});
+      if(!res.ok) throw new Error('push failed');
+      setSyncStatus('sincronizado ✓', 'ok');
+    }catch(e){
+      setSyncStatus('error de sync', 'err');
+    }
+  }, 1500);
+}
+async function pullFromCloud(isInitialConnect){
+  const endpoint = syncEndpoint();
+  if(!endpoint) return;
+  try{
+    const res = await fetch(endpoint);
+    if(!res.ok) throw new Error('pull failed');
+    const remote = await res.json();
+    if(!remote){
+      // no hay nada aún en la nube: subimos lo que tenemos localmente
+      if(isInitialConnect) pushToCloud();
+      setSyncStatus('sincronizado ✓', 'ok');
+      return;
+    }
+    const remoteTs = remote._updatedAt ? new Date(remote._updatedAt).getTime() : 0;
+    const localTs = state._updatedAt ? new Date(state._updatedAt).getTime() : 0;
+    if(remoteTs > localTs){
+      state = {...state, ...remote};
+      state.sectors = {...{work:{},uoc:{},personal:{}}, ...remote.sectors};
+      if(remote.pomodoro){ state.pomodoro = {...state.pomodoro, ...remote.pomodoro, running:false}; }
+      if(remote.water){ state.water = {...state.water, ...remote.water}; }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      render();
+    } else if(isInitialConnect && localTs > remoteTs){
+      pushToCloud();
+    }
+    setSyncStatus('sincronizado ✓', 'ok');
+  }catch(e){
+    setSyncStatus('error de sync', 'err');
+  }
+}
+
 function renderBackupLabel(){
   const ts = localStorage.getItem(BACKUP_TS_KEY);
   const el = document.getElementById('backup-last');
@@ -1086,7 +1205,14 @@ setInterval(updateClock, 60000);
 setInterval(() => { rolloverWater(); rolloverFocus(); render(); }, 60000);
 fetchWeather();
 setInterval(fetchWeather, 1800000);
+loadSyncConfig();
+if(syncConfig){ setSyncStatus('conectando…', 'syncing'); }
 load();
+if(syncConfig){
+  pullFromCloud();
+  setInterval(() => pullFromCloud(), 45000);
+  window.addEventListener('focus', () => pullFromCloud());
+}
 </script>
 </body>
 </html>
