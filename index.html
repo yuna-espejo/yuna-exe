@@ -96,34 +96,38 @@ header{
 .sector-edit .row{display:flex; gap:6px;}
 .sector-edit button{background:var(--amber); border:none; color:#1a1305; font-weight:700; padding:6px 10px; border-radius:3px; cursor:pointer; font-size:11px; text-transform:uppercase;}
 
-/* ---------- POMODORO ---------- */
-.pomodoro-panel{margin-bottom:16px;}
-.pomo-body{display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;}
-.pomo-left{display:flex; flex-direction:column; gap:6px;}
-.pomo-mode{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:3px; color:var(--amber);}
-.pomo-mode.break{color:var(--teal);}
-.pomo-time{font-family:'JetBrains Mono',monospace; font-size:44px; font-weight:700; line-height:1;}
-.pomo-linked select{
-  background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim);
-  border-radius:3px; padding:6px 8px; font-size:12px; font-family:'Titillium Web',sans-serif; max-width:280px;
+/* ---------- CRONOMETRO ---------- */
+.crono-panel{margin-bottom:16px;}
+.crono-top{display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:14px;}
+.crono-left{display:flex; flex-direction:column; gap:6px;}
+.crono-time{font-family:'JetBrains Mono',monospace; font-size:44px; font-weight:700; line-height:1;}
+.crono-time.running{color:var(--amber);}
+.crono-task input, .crono-task select{
+  background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+  border-radius:3px; padding:7px 9px; font-size:13px; font-family:'Titillium Web',sans-serif; min-width:220px;
 }
-.pomo-right{display:flex; flex-direction:column; gap:12px; align-items:flex-end;}
-.pomo-controls{display:flex; gap:8px;}
-.pomo-btn{
+.crono-right{display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+.crono-controls{display:flex; gap:8px;}
+.crono-btn{
   background:none; border:1px solid var(--line); color:var(--text-dim); font-weight:700; padding:9px 16px;
   border-radius:3px; cursor:pointer; font-size:12px; text-transform:uppercase; letter-spacing:.5px;
 }
-.pomo-btn:hover{border-color:var(--text-dim); color:var(--text);}
-.pomo-btn.primary{background:var(--amber); border:none; color:#1a1305;}
-.pomo-btn.primary:hover{filter:brightness(1.08);}
-.pomo-btn.primary.running{background:var(--red); color:#2a0d0d;}
-.pomo-config{display:flex; gap:14px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim);}
-.pomo-config label{display:flex; align-items:center; gap:6px;}
-.pomo-config input{
-  width:48px; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
-  border-radius:3px; padding:4px 6px; font-family:'JetBrains Mono',monospace; font-size:11px;
-}
-@media(max-width:600px){ .pomo-body{flex-direction:column; align-items:flex-start;} .pomo-right{align-items:flex-start; width:100%;} }
+.crono-btn:hover{border-color:var(--text-dim); color:var(--text);}
+.crono-btn.primary{background:var(--amber); border:none; color:#1a1305;}
+.crono-btn.primary:hover{filter:brightness(1.08);}
+.crono-btn.primary.running{background:var(--red); color:#2a0d0d;}
+.crono-btn.save{background:var(--green); border:none; color:#0d2a15;}
+@media(max-width:600px){ .crono-top{flex-direction:column; align-items:flex-start;} .crono-right{align-items:flex-start; width:100%;} }
+
+.crono-list{border-top:1px solid var(--line); padding-top:10px;}
+.crono-entry{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:7px 0; border-bottom:1px dashed var(--line); font-size:13px;}
+.crono-entry:last-child{border-bottom:none;}
+.crono-entry .ce-task{flex:1;}
+.crono-entry .ce-dur{font-family:'JetBrains Mono',monospace; color:var(--amber); flex-shrink:0;}
+.crono-entry .del{cursor:pointer; color:var(--text-dim); flex-shrink:0;}
+.crono-entry .del:hover{color:var(--red);}
+.crono-total{display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-weight:700; font-family:'JetBrains Mono',monospace; font-size:13px;}
+.crono-total .val{color:var(--green);}
 
 /* ---------- GRID ---------- */
 .grid{display:grid; grid-template-columns: 1.3fr 1fr; gap:16px; margin-bottom:16px;}
@@ -272,7 +276,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v10</div>
+      <div class="tag">life dashboard // build v11</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -311,30 +315,27 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
   <!-- SECTORS -->
   <div class="sectors" id="sectors"></div>
 
-  <!-- POMODORO -->
-  <div class="panel pomodoro-panel">
-    <h3>Pomodoro <span class="accent" id="pomo-today-count">0 hoy</span></h3>
-    <div class="pomo-body">
-      <div class="pomo-left">
-        <div class="pomo-mode" id="pomo-mode">ENFOQUE</div>
-        <div class="pomo-time" id="pomo-time">25:00</div>
-        <div class="pomo-linked" id="pomo-linked-wrap">
-          <select id="pomo-task">
-            <option value="">— sin tarea vinculada —</option>
-          </select>
+  <!-- CRONOMETRO -->
+  <div class="panel crono-panel">
+    <h3>Cronómetro <span class="accent" id="crono-today-total">0h 00m hoy</span></h3>
+    <div class="crono-top">
+      <div class="crono-left">
+        <div class="crono-time" id="crono-time">00:00:00</div>
+        <div class="crono-task">
+          <input type="text" id="crono-task-input" list="crono-task-suggestions" placeholder="¿En qué tarea? (ej. Avizor - IFlow 2 Business Partner)">
+          <datalist id="crono-task-suggestions"></datalist>
         </div>
       </div>
-      <div class="pomo-right">
-        <div class="pomo-controls">
-          <button class="pomo-btn primary" id="pomo-toggle" onclick="togglePomo()">Iniciar</button>
-          <button class="pomo-btn" onclick="resetPomo()">Reiniciar</button>
-        </div>
-        <div class="pomo-config">
-          <label>Enfoque <input type="number" id="pomo-work-min" min="1" max="90"></label>
-          <label>Descanso <input type="number" id="pomo-break-min" min="1" max="30"></label>
+      <div class="crono-right">
+        <div class="crono-controls">
+          <button class="crono-btn primary" id="crono-toggle" onclick="toggleCrono()">Iniciar</button>
+          <button class="crono-btn save" onclick="stopAndSaveCrono()">Guardar</button>
+          <button class="crono-btn" onclick="resetCrono()">Descartar</button>
         </div>
       </div>
     </div>
+    <div class="crono-list" id="crono-list"></div>
+    <div class="crono-total"><span>Total hoy</span><span class="val" id="crono-total-val">0h 00m</span></div>
   </div>
 
   <div class="grid">
@@ -390,7 +391,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
           <div class="water-count"><span id="water-val">0</span><span class="water-goal">/ 8 vasos</span></div>
           <div class="water-controls">
             <button class="habit-btn" onclick="adjustWater(-1)">–</button>
-            <button class="pomo-btn primary" style="padding:6px 14px;" onclick="adjustWater(1)">+ vaso</button>
+            <button class="crono-btn primary" style="padding:6px 14px;" onclick="adjustWater(1)">+ vaso</button>
           </div>
         </div>
       </div>
@@ -527,15 +528,13 @@ let state = {
     {text:'Mi sistema de seguimiento lleva semanas sin reflejar la realidad.', checked:false},
   ],
   sectorEditOpen: {work:false, uoc:false, personal:false},
-  pomodoro: {
-    workMin: 25,
-    breakMin: 5,
-    secondsLeft: 25*60,
-    mode: 'work',
+  crono: {
     running: false,
-    linkedFocusId: '',
-    completed: {} // { 'YYYY-MM-DD': count }
+    startedAt: null,   // timestamp ms de cuando se pulsó Iniciar
+    accumulated: 0,     // segundos acumulados si se pausa/reanuda
+    task: ''
   },
+  timeEntries: {}, // { 'YYYY-MM-DD': [ {id, task, seconds} ] }
   focusTags: [
     {key:'work', label:'Timestamp'},
     {key:'uoc', label:'UOC'},
@@ -552,8 +551,8 @@ function load(){
       const parsed = JSON.parse(raw);
       state = {...state, ...parsed};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...parsed.sectors};
-      if(parsed.pomodoro){
-        state.pomodoro = {...state.pomodoro, ...parsed.pomodoro, running:false};
+      if(parsed.crono){
+        state.crono = normalizeCronoOnLoad(parsed.crono);
       }
       if(parsed.water){
         state.water = {...state.water, ...parsed.water};
@@ -685,7 +684,7 @@ async function pullFromCloud(isInitialConnect){
     if(remoteTs > localTs){
       state = {...state, ...remote};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...remote.sectors};
-      if(remote.pomodoro){ state.pomodoro = {...state.pomodoro, ...remote.pomodoro, running:false}; }
+      if(remote.crono){ state.crono = normalizeCronoOnLoad(remote.crono); }
       if(remote.water){ state.water = {...state.water, ...remote.water}; }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       render();
@@ -730,9 +729,9 @@ function importBackup(event){
       if(!confirm('Esto sustituye los datos actuales del dashboard por los del archivo. ¿Seguro?')) return;
       state = {...state, ...imported};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...imported.sectors};
-      if(imported.pomodoro){ state.pomodoro = {...state.pomodoro, ...imported.pomodoro, running:false}; }
+      if(imported.crono){ state.crono = normalizeCronoOnLoad(imported.crono); }
       if(imported.water){ state.water = {...state.water, ...imported.water}; }
-      clearInterval(pomoInterval);
+      clearInterval(cronoInterval);
       save();
       localStorage.setItem(BACKUP_TS_KEY, new Date().toISOString());
       renderBackupLabel();
@@ -786,91 +785,110 @@ async function fetchWeather(){
   }
 }
 
-/* ---------- POMODORO ---------- */
-let pomoInterval = null;
+/* ---------- CRONOMETRO ---------- */
+let cronoInterval = null;
 
-function renderPomodoro(){
-  const p = state.pomodoro;
-  const mins = String(Math.floor(p.secondsLeft/60)).padStart(2,'0');
-  const secs = String(p.secondsLeft%60).padStart(2,'0');
-  document.getElementById('pomo-time').textContent = `${mins}:${secs}`;
-  const modeEl = document.getElementById('pomo-mode');
-  modeEl.textContent = p.mode === 'work' ? 'ENFOQUE' : 'DESCANSO';
-  modeEl.className = 'pomo-mode' + (p.mode === 'break' ? ' break' : '');
-
-  const toggleBtn = document.getElementById('pomo-toggle');
-  toggleBtn.textContent = p.running ? 'Pausar' : 'Iniciar';
-  toggleBtn.className = 'pomo-btn primary' + (p.running ? ' running' : '');
-
-  if(!document.activeElement || document.activeElement.id !== 'pomo-work-min'){
-    document.getElementById('pomo-work-min').value = p.workMin;
-  }
-  if(!document.activeElement || document.activeElement.id !== 'pomo-break-min'){
-    document.getElementById('pomo-break-min').value = p.breakMin;
-  }
-
-  // vincular con tareas pendientes de Today's Focus
-  const sel = document.getElementById('pomo-task');
-  const current = p.linkedFocusId;
-  const pending = state.focus.filter(f=>!f.done);
-  sel.innerHTML = '<option value="">— sin tarea vinculada —</option>' +
-    pending.map(f => `<option value="${f.id}" ${String(f.id)===String(current)?'selected':''}>${escapeHtml(f.text)}</option>`).join('');
-
-  document.getElementById('pomo-today-count').textContent = (p.completed[todayKey()] || 0) + ' hoy';
+function cronoElapsedSeconds(){
+  const c = state.crono;
+  let s = c.accumulated || 0;
+  if(c.running && c.startedAt) s += (Date.now() - c.startedAt) / 1000;
+  return s;
+}
+function formatHMS(totalSeconds){
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const h = String(Math.floor(s/3600)).padStart(2,'0');
+  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  return `${h}:${m}:${sec}`;
+}
+function formatHM(totalSeconds){
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const h = Math.floor(s/3600);
+  const m = Math.floor((s%3600)/60);
+  return `${h}h ${String(m).padStart(2,'0')}m`;
 }
 
-function togglePomo(){
-  const p = state.pomodoro;
-  p.linkedFocusId = document.getElementById('pomo-task').value;
-  if(p.running){
-    pausePomo();
+function renderCrono(){
+  const c = state.crono;
+  document.getElementById('crono-time').textContent = formatHMS(cronoElapsedSeconds());
+  document.getElementById('crono-time').className = 'crono-time' + (c.running ? ' running' : '');
+
+  const btn = document.getElementById('crono-toggle');
+  btn.textContent = c.running ? 'Pausar' : 'Iniciar';
+  btn.className = 'crono-btn primary' + (c.running ? ' running' : '');
+
+  const input = document.getElementById('crono-task-input');
+  if(document.activeElement !== input) input.value = c.task || '';
+
+  // sugerencias: tareas pendientes de Today's Focus
+  document.getElementById('crono-task-suggestions').innerHTML =
+    state.focus.filter(f=>!f.done).map(f => `<option value="${escapeHtml(f.text)}"></option>`).join('');
+
+  const today = todayKey();
+  const entries = state.timeEntries[today] || [];
+  const list = document.getElementById('crono-list');
+  list.innerHTML = entries.map(e => `
+    <div class="crono-entry">
+      <span class="ce-task">${escapeHtml(e.task || 'Sin nombre')}</span>
+      <span class="ce-dur">${formatHM(e.seconds)}</span>
+      <span class="del" onclick="deleteTimeEntry('${e.id}')">✕</span>
+    </div>`).join('') || '<div style="color:var(--text-dim); font-size:12px; padding:6px 0;">Sin cronos guardados hoy.</div>';
+
+  const totalToday = entries.reduce((a,e)=>a+e.seconds, 0);
+  document.getElementById('crono-total-val').textContent = formatHM(totalToday);
+  document.getElementById('crono-today-total').textContent = formatHM(totalToday) + ' hoy';
+}
+
+function toggleCrono(){
+  const c = state.crono;
+  c.task = document.getElementById('crono-task-input').value.trim();
+  if(c.running){
+    c.accumulated = cronoElapsedSeconds();
+    c.running = false;
+    c.startedAt = null;
+    clearInterval(cronoInterval);
+    save(); renderCrono();
   }else{
-    p.running = true;
-    save(); renderPomodoro();
-    pomoInterval = setInterval(pomoTick, 1000);
+    c.startedAt = Date.now();
+    c.running = true;
+    save(); renderCrono();
+    cronoInterval = setInterval(renderCrono, 1000);
   }
 }
-function pausePomo(){
-  state.pomodoro.running = false;
-  clearInterval(pomoInterval);
-  save(); renderPomodoro();
+function stopAndSaveCrono(){
+  const c = state.crono;
+  const seconds = Math.round(cronoElapsedSeconds());
+  if(seconds < 1){ resetCrono(); return; }
+  const task = document.getElementById('crono-task-input').value.trim() || c.task || 'Sin nombre';
+  const today = todayKey();
+  if(!state.timeEntries[today]) state.timeEntries[today] = [];
+  state.timeEntries[today].push({id: 'te-'+Date.now(), task, seconds});
+  clearInterval(cronoInterval);
+  state.crono = {running:false, startedAt:null, accumulated:0, task:''};
+  document.getElementById('crono-task-input').value = '';
+  save(); renderCrono();
 }
-function pomoTick(){
-  const p = state.pomodoro;
-  p.secondsLeft--;
-  if(p.secondsLeft <= 0){
-    if(p.mode === 'work'){
-      const k = todayKey();
-      p.completed[k] = (p.completed[k] || 0) + 1;
-      p.mode = 'break';
-      p.secondsLeft = p.breakMin * 60;
-    } else {
-      p.mode = 'work';
-      p.secondsLeft = p.workMin * 60;
-    }
-    save();
+function resetCrono(){
+  clearInterval(cronoInterval);
+  state.crono = {running:false, startedAt:null, accumulated:0, task:''};
+  document.getElementById('crono-task-input').value = '';
+  save(); renderCrono();
+}
+function deleteTimeEntry(id){
+  const today = todayKey();
+  if(!state.timeEntries[today]) return;
+  state.timeEntries[today] = state.timeEntries[today].filter(e=>e.id!==id);
+  save(); renderCrono();
+}
+function normalizeCronoOnLoad(c){
+  const out = {...state.crono, ...c};
+  if(out.running && out.startedAt){
+    out.accumulated = (out.accumulated || 0) + (Date.now() - out.startedAt) / 1000;
   }
-  renderPomodoro();
+  out.running = false;
+  out.startedAt = null;
+  return out;
 }
-function resetPomo(){
-  const p = state.pomodoro;
-  clearInterval(pomoInterval);
-  p.running = false;
-  p.mode = 'work';
-  const workInput = parseInt(document.getElementById('pomo-work-min').value);
-  const breakInput = parseInt(document.getElementById('pomo-break-min').value);
-  if(!isNaN(workInput) && workInput > 0) p.workMin = workInput;
-  if(!isNaN(breakInput) && breakInput > 0) p.breakMin = breakInput;
-  p.secondsLeft = p.workMin * 60;
-  save(); renderPomodoro();
-}
-document.addEventListener('DOMContentLoaded', () => {
-  ['pomo-work-min','pomo-break-min'].forEach(id => {
-    document.getElementById(id).addEventListener('change', () => {
-      if(!state.pomodoro.running) resetPomo();
-    });
-  });
-});
 
 /* ---------- SECTORS ---------- */
 function renderSectors(){
@@ -914,7 +932,7 @@ function saveSector(k){
 /* ---------- MASTER RENDER (everything except sectors, which has its own) ---------- */
 function render(){
   renderSectors();
-  renderPomodoro();
+  renderCrono();
 
   const list = document.getElementById('focus-list');
   list.innerHTML = state.focus.map(f => `
