@@ -64,6 +64,10 @@ header{
   padding:14px 16px; margin-top:12px; gap:10px; flex-direction:column;
 }
 .sync-panel.open{display:flex;}
+.sync-link-box{display:none; flex-direction:column; gap:10px; margin-top:6px; padding-top:14px; border-top:1px dashed var(--line);}
+.sync-link-box.show{display:flex;}
+.sync-link-box img{border-radius:4px; background:#fff; padding:6px;}
+#sync-link-input{flex:1; font-family:'JetBrains Mono',monospace; font-size:11px;}
 .sync-help{font-size:12px; color:var(--text-dim); line-height:1.5;}
 #sync-status.ok{color:var(--green);}
 #sync-status.err{color:var(--red);}
@@ -276,7 +280,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v11</div>
+      <div class="tag">life dashboard // build v14</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -286,6 +290,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
         <div class="hdr-stat"><div class="l">Sync</div><div class="v small" id="sync-status">desconectado</div></div>
         <div class="backup-btns">
           <button class="mini-btn" onclick="toggleSyncPanel()">⇄ sync</button>
+          <button class="mini-btn" onclick="pullFromCloud()" title="Traer lo último de la nube">↻ actualizar</button>
         </div>
       </div>
       <div class="hdr-backup">
@@ -306,6 +311,14 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
         <input type="text" id="sync-code" placeholder="tu código de sincronización (ej. yuna-2026)">
         <button onclick="connectSync()">Conectar</button>
         <button class="ghost" onclick="disconnectSync()">Desconectar</button>
+      </div>
+      <div class="sync-link-box" id="sync-link-box">
+        <p class="sync-help">Ya no hace falta escribir esto a mano en otros dispositivos. Escanea el QR con el móvil, o copia el enlace y ábrelo — se conecta solo.</p>
+        <div class="add-row">
+          <input type="text" id="sync-link-input" readonly onclick="this.select()">
+          <button class="ghost" onclick="copySyncLink()">Copiar</button>
+        </div>
+        <img id="sync-qr" alt="QR de conexión" width="150" height="150">
       </div>
     </div>
   </header>
@@ -560,7 +573,6 @@ function load(){
     }
   }catch(e){ /* primera vez */ }
   rolloverWater();
-  rolloverFocus();
   renderBackupLabel();
   render();
 }
@@ -572,14 +584,6 @@ function rolloverWater(){
     }
     state.water.date = today;
     state.water.count = 0;
-    save();
-  }
-}
-function rolloverFocus(){
-  const today = todayKey();
-  if(state.focusRolloverDate !== today){
-    state.focus = state.focus.filter(f => !f.done);
-    state.focusRolloverDate = today;
     save();
   }
 }
@@ -624,7 +628,40 @@ function toggleSyncPanel(){
   if(panel.classList.contains('open') && syncConfig){
     document.getElementById('sync-url').value = syncConfig.url || '';
     document.getElementById('sync-code').value = syncConfig.code || '';
+    renderSyncLink();
   }
+}
+function renderSyncLink(){
+  const box = document.getElementById('sync-link-box');
+  if(!syncConfig){ box.classList.remove('show'); return; }
+  const payload = btoa(JSON.stringify({url: syncConfig.url, code: syncConfig.code}));
+  const base = location.origin + location.pathname;
+  const link = `${base}?s=${encodeURIComponent(payload)}`;
+  document.getElementById('sync-link-input').value = link;
+  document.getElementById('sync-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
+  box.classList.add('show');
+}
+function copySyncLink(){
+  const input = document.getElementById('sync-link-input');
+  input.select();
+  navigator.clipboard?.writeText(input.value).catch(()=>{});
+  try{ document.execCommand('copy'); }catch(e){}
+}
+function checkSyncLinkParam(){
+  const params = new URLSearchParams(location.search);
+  const s = params.get('s');
+  if(!s) return;
+  try{
+    const decoded = JSON.parse(atob(s));
+    if(decoded.url && decoded.code){
+      syncConfig = {url: decoded.url, code: decoded.code};
+      localStorage.setItem(SYNC_CONFIG_KEY, JSON.stringify(syncConfig));
+    }
+  }catch(e){ /* enlace inválido, se ignora */ }
+  // limpiamos la URL para no dejar el código visible en el historial del navegador
+  params.delete('s');
+  const clean = location.pathname + (params.toString() ? '?'+params.toString() : '');
+  history.replaceState({}, '', clean);
 }
 function setSyncStatus(text, cls){
   const el = document.getElementById('sync-status');
@@ -644,27 +681,23 @@ function connectSync(){
   syncConfig = {url, code};
   localStorage.setItem(SYNC_CONFIG_KEY, JSON.stringify(syncConfig));
   setSyncStatus('conectando…', 'syncing');
+  renderSyncLink();
   pullFromCloud(true);
 }
 function disconnectSync(){
   syncConfig = null;
   localStorage.removeItem(SYNC_CONFIG_KEY);
   setSyncStatus('desconectado');
+  document.getElementById('sync-link-box').classList.remove('show');
 }
 function pushToCloud(){
   const endpoint = syncEndpoint();
   if(!endpoint) return;
   clearTimeout(syncPushTimer);
-  syncPushTimer = setTimeout(async () => {
-    setSyncStatus('sincronizando…', 'syncing');
-    try{
-      const res = await fetch(endpoint, {method:'PUT', body: JSON.stringify(state)});
-      if(!res.ok) throw new Error('push failed');
-      setSyncStatus('sincronizado ✓', 'ok');
-    }catch(e){
-      setSyncStatus('error de sync', 'err');
-    }
-  }, 1500);
+  setSyncStatus('sincronizando…', 'syncing');
+  fetch(endpoint, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(state)})
+    .then(res => { if(!res.ok) throw new Error('push failed'); setSyncStatus('sincronizado ✓', 'ok'); })
+    .catch(() => setSyncStatus('error de sync', 'err'));
 }
 async function pullFromCloud(isInitialConnect){
   const endpoint = syncEndpoint();
@@ -682,12 +715,16 @@ async function pullFromCloud(isInitialConnect){
     const remoteTs = remote._updatedAt ? new Date(remote._updatedAt).getTime() : 0;
     const localTs = state._updatedAt ? new Date(state._updatedAt).getTime() : 0;
     if(remoteTs > localTs){
-      state = {...state, ...remote};
-      state.sectors = {...{work:{},uoc:{},personal:{}}, ...remote.sectors};
-      if(remote.crono){ state.crono = normalizeCronoOnLoad(remote.crono); }
-      if(remote.water){ state.water = {...state.water, ...remote.water}; }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      render();
+      const remoteScore = contentScore(remote);
+      const localScore = contentScore(state);
+      if(localScore > 0 && remoteScore !== localScore && !confirm(
+        `La nube tiene una versión distinta a la de este dispositivo (${remoteScore} elementos en la nube vs ${localScore} aquí), aunque más reciente.\n\n¿Sustituir lo de aquí por lo de la nube?\n\nSi dices "Cancelar", se mantiene lo de este dispositivo y se sube a la nube.`
+      )){
+        pushToCloud();
+        setSyncStatus('sincronizado ✓', 'ok');
+        return;
+      }
+      applyRemoteState(remote);
     } else if(isInitialConnect && localTs > remoteTs){
       pushToCloud();
     }
@@ -695,6 +732,19 @@ async function pullFromCloud(isInitialConnect){
   }catch(e){
     setSyncStatus('error de sync', 'err');
   }
+}
+function contentScore(s){
+  const timeEntriesCount = Object.values(s.timeEntries||{}).reduce((a,arr)=>a+(arr?arr.length:0), 0);
+  return (s.focus?.length||0) + (s.goals?.length||0) + (s.milestones?.length||0) +
+    Object.keys(s.diary||{}).length + timeEntriesCount + (s.stocks?.length||0);
+}
+function applyRemoteState(remote){
+  state = {...state, ...remote};
+  state.sectors = {...{work:{},uoc:{},personal:{}}, ...remote.sectors};
+  if(remote.crono){ state.crono = normalizeCronoOnLoad(remote.crono); }
+  if(remote.water){ state.water = {...state.water, ...remote.water}; }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  render();
 }
 
 function renderBackupLabel(){
@@ -1220,16 +1270,15 @@ function removeNN(i){ state.nn.splice(i,1); save(); render(); }
 
 updateClock();
 setInterval(updateClock, 60000);
-setInterval(() => { rolloverWater(); rolloverFocus(); render(); }, 60000);
+setInterval(() => { rolloverWater(); render(); }, 60000);
 fetchWeather();
 setInterval(fetchWeather, 1800000);
+checkSyncLinkParam();
 loadSyncConfig();
 if(syncConfig){ setSyncStatus('conectando…', 'syncing'); }
 load();
 if(syncConfig){
   pullFromCloud();
-  setInterval(() => pullFromCloud(), 45000);
-  window.addEventListener('focus', () => pullFromCloud());
 }
 </script>
 </body>
