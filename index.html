@@ -280,7 +280,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v14</div>
+      <div class="tag">life dashboard // build v15</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -650,18 +650,21 @@ function copySyncLink(){
 function checkSyncLinkParam(){
   const params = new URLSearchParams(location.search);
   const s = params.get('s');
-  if(!s) return;
+  if(!s) return false;
+  let connected = false;
   try{
     const decoded = JSON.parse(atob(s));
     if(decoded.url && decoded.code){
       syncConfig = {url: decoded.url, code: decoded.code};
       localStorage.setItem(SYNC_CONFIG_KEY, JSON.stringify(syncConfig));
+      connected = true;
     }
   }catch(e){ /* enlace inválido, se ignora */ }
   // limpiamos la URL para no dejar el código visible en el historial del navegador
   params.delete('s');
   const clean = location.pathname + (params.toString() ? '?'+params.toString() : '');
   history.replaceState({}, '', clean);
+  return connected;
 }
 function setSyncStatus(text, cls){
   const el = document.getElementById('sync-status');
@@ -995,6 +998,13 @@ function render(){
   const done = state.focus.filter(f=>f.done).length;
   document.getElementById('focus-count').textContent = `${done}/${state.focus.length}`;
 
+  if(!state.focusTags || state.focusTags.length === 0){
+    state.focusTags = [
+      {key:'work', label:'Timestamp'},
+      {key:'uoc', label:'UOC'},
+      {key:'personal', label:'Personal'},
+    ];
+  }
   const tagSel = document.getElementById('new-tag');
   const prevTag = tagSel.value;
   tagSel.innerHTML = state.focusTags.map(t => `<option value="${t.key}">${escapeHtml(t.label)}</option>`).join('');
@@ -1273,12 +1283,12 @@ setInterval(updateClock, 60000);
 setInterval(() => { rolloverWater(); render(); }, 60000);
 fetchWeather();
 setInterval(fetchWeather, 1800000);
-checkSyncLinkParam();
+const cameFromSyncLink = checkSyncLinkParam();
 loadSyncConfig();
-if(syncConfig){ setSyncStatus('conectando…', 'syncing'); }
+if(syncConfig){ setSyncStatus(cameFromSyncLink ? 'conectando…' : 'conectado', cameFromSyncLink ? 'syncing' : 'ok'); }
 load();
-if(syncConfig){
-  pullFromCloud();
+if(syncConfig && cameFromSyncLink){
+  pullFromCloud(true);
 }
 </script>
 </body>
