@@ -280,7 +280,7 @@ footer{text-align:center; margin-top:26px; font-family:'JetBrains Mono',monospac
 
   <header>
     <div class="brand">
-      <div class="tag">life dashboard // build v15</div>
+      <div class="tag">life dashboard // build v16</div>
       <h1>Yuna.sys</h1>
     </div>
     <div class="hdr-right">
@@ -556,6 +556,7 @@ let state = {
   water: { count: 0, date: todayKey(), history: {} },
   focusRolloverDate: todayKey(),
 };
+const DEFAULT_STATE = JSON.parse(JSON.stringify(state)); // copia intacta de los valores por defecto, para poder rellenar huecos de datos antiguos sin que se pisen entre sí
 
 function load(){
   try{
@@ -564,12 +565,9 @@ function load(){
       const parsed = JSON.parse(raw);
       state = {...state, ...parsed};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...parsed.sectors};
-      if(parsed.crono){
-        state.crono = normalizeCronoOnLoad(parsed.crono);
-      }
-      if(parsed.water){
-        state.water = {...state.water, ...parsed.water};
-      }
+      state.crono = normalizeCronoOnLoad(parsed.crono || {});
+      state.water = {...DEFAULT_STATE.water, ...(parsed.water || {})};
+      if(!state.focusTags || state.focusTags.length === 0){ state.focusTags = DEFAULT_STATE.focusTags; }
     }
   }catch(e){ /* primera vez */ }
   rolloverWater();
@@ -577,6 +575,8 @@ function load(){
   render();
 }
 function rolloverWater(){
+  if(!state.water) state.water = {...DEFAULT_STATE.water};
+  if(!state.water.history) state.water.history = {};
   const today = todayKey();
   if(state.water.date !== today){
     if(state.water.count > 0){
@@ -744,8 +744,9 @@ function contentScore(s){
 function applyRemoteState(remote){
   state = {...state, ...remote};
   state.sectors = {...{work:{},uoc:{},personal:{}}, ...remote.sectors};
-  if(remote.crono){ state.crono = normalizeCronoOnLoad(remote.crono); }
-  if(remote.water){ state.water = {...state.water, ...remote.water}; }
+  state.crono = normalizeCronoOnLoad(remote.crono || {});
+  state.water = {...DEFAULT_STATE.water, ...(remote.water || {})};
+  if(!state.focusTags || state.focusTags.length === 0){ state.focusTags = DEFAULT_STATE.focusTags; }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   render();
 }
@@ -782,8 +783,9 @@ function importBackup(event){
       if(!confirm('Esto sustituye los datos actuales del dashboard por los del archivo. ¿Seguro?')) return;
       state = {...state, ...imported};
       state.sectors = {...{work:{},uoc:{},personal:{}}, ...imported.sectors};
-      if(imported.crono){ state.crono = normalizeCronoOnLoad(imported.crono); }
-      if(imported.water){ state.water = {...state.water, ...imported.water}; }
+      state.crono = normalizeCronoOnLoad(imported.crono || {});
+      state.water = {...DEFAULT_STATE.water, ...(imported.water || {})};
+      if(!state.focusTags || state.focusTags.length === 0){ state.focusTags = DEFAULT_STATE.focusTags; }
       clearInterval(cronoInterval);
       save();
       localStorage.setItem(BACKUP_TS_KEY, new Date().toISOString());
@@ -934,7 +936,7 @@ function deleteTimeEntry(id){
   save(); renderCrono();
 }
 function normalizeCronoOnLoad(c){
-  const out = {...state.crono, ...c};
+  const out = {...DEFAULT_STATE.crono, ...c};
   if(out.running && out.startedAt){
     out.accumulated = (out.accumulated || 0) + (Date.now() - out.startedAt) / 1000;
   }
